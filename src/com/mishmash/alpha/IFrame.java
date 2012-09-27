@@ -3,6 +3,8 @@
  */
 package com.mishmash.alpha;
 
+import com.mishmash.alpha.vehicleparts.IVehicleProperty;
+
 /**
  * @author mrmcduff
  *

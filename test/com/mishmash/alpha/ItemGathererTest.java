@@ -12,16 +12,6 @@ import org.junit.Test;
 public class ItemGathererTest {
 
     private static final String DATA_SOURCE = "http://www.atlanticbt.com/mobiletest/json.txt";
-    private JFrame myFrame;
-    @Before
-    public void setUp() throws Exception {
-        myFrame = new JFrame();
-        myFrame.show();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-    }
 
     @Test
     public void testGetSmallAmountOfTextDataFromSource() {
@@ -38,7 +28,7 @@ public class ItemGathererTest {
             }
         }
         firstMessage = sb.toString();
-        int answer = JOptionPane.showConfirmDialog(myFrame, firstMessage, 
+        int answer = JOptionPane.showConfirmDialog(null, firstMessage, 
                 "Does this look okay?", JOptionPane.YES_NO_OPTION);
         assertEquals(0, answer);
         
@@ -50,7 +40,7 @@ public class ItemGathererTest {
                 sb.append("\n");
             }
             secondMessage = sb.toString();
-            int secondAnswer = JOptionPane.showConfirmDialog(myFrame, secondMessage, 
+            int secondAnswer = JOptionPane.showConfirmDialog(null, secondMessage, 
                     "How about this?", JOptionPane.YES_NO_OPTION);
             assertEquals(0, secondAnswer);
         }

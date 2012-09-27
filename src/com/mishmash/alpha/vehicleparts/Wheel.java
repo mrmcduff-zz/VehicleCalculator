@@ -1,22 +1,24 @@
-package com.mishmash.alpha;
+package com.mishmash.alpha.vehicleparts;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Wheel implements IVehicleProperty{
+import com.mishmash.alpha.VehicleType;
+
+public class Wheel implements IVehicleProperty, IDistanceModifierProperty {
 
     private String name;
-    private static final String PROPERTY_NAME = "Wheel";
-    private double timeModifierPercentage;
-    private double speedModifierPercentage;
+    private static final String PROPERTY_NAME = "Wheels";
+    private double timeModifierValue;
+    private double speedModifierValue;
     private List<Map<VehicleType, Boolean>> tirePositionMapList = new ArrayList<Map<VehicleType, Boolean> >();
     
-    public Wheel(String name, double timeModifier, double speedModifier, List<VehicleType>... orderedValidPositions) {
+    public Wheel(String name, double timeModifierPercentage, double speedModifierPercentage, List<VehicleType>... orderedValidPositions) {
         this.name = name;
-        this.timeModifierPercentage = timeModifier;
-        this.speedModifierPercentage = speedModifier;
+        this.timeModifierValue = PropertyUtilities.convertFromPercentageToModifier(timeModifierPercentage);
+        this.speedModifierValue = PropertyUtilities.convertFromPercentageToModifier(speedModifierPercentage);
         
         for (List<VehicleType> list : orderedValidPositions) {
             Map<VehicleType, Boolean> positionMap = new HashMap<VehicleType, Boolean>();
@@ -37,12 +39,14 @@ public class Wheel implements IVehicleProperty{
         return Wheel.PROPERTY_NAME;
     }
     
-    public double getTimeModifierPercentage() {
-        return this.timeModifierPercentage;
+    @Override
+    public double getTimeModifierFactor() {
+        return this.timeModifierValue;
     }
     
-    public double getSpeedModifierPercentage() {
-        return this.speedModifierPercentage;
+    @Override
+    public double getSpeedModifierFactor() {
+        return this.speedModifierValue;
     }
     
     public boolean isValidFor(VehicleType type, int position) {
@@ -52,6 +56,11 @@ public class Wheel implements IVehicleProperty{
             isValid = positionMap.containsKey(type) && positionMap.get(type);
         }
         return isValid;
+    }
+    
+    @Override
+    public boolean hasAllValidModifiers() {
+        return this.timeModifierValue > 0 && this.speedModifierValue > 0;
     }
 
 }

@@ -1,28 +1,22 @@
-/**
- * 
- */
-package com.mishmash.alpha;
+package com.mishmash.alpha.vehicleparts;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author mrmcduff
- *
- */
-public class PowerPlant implements IVehicleProperty{
-    
+import com.mishmash.alpha.VehicleType;
+
+public abstract class UnaryVehicleProperty implements
+        IVehicleProperty {
+
     private String name;
-    private double speedInMph;
     private Map<VehicleType, Boolean> validMap = new HashMap<VehicleType, Boolean>();
-    private static final String PROPERTY_NAME = "Power Plant";
     
-    public PowerPlant(String name, double speedInMph) {
-        this(name, speedInMph, null);
+    public UnaryVehicleProperty(String name) {
+        this(name, null);
     }
     
-    public PowerPlant(String name, double speedInMph, List<VehicleType> validTypes) {
+    public UnaryVehicleProperty(String name, List<VehicleType> validTypes) {
         if (validTypes != null)
         {
             for (VehicleType type : validTypes) {
@@ -31,23 +25,13 @@ public class PowerPlant implements IVehicleProperty{
         }
         
         this.name = name;
-        this.speedInMph = speedInMph;
     }
     
     @Override
     public String getName() {
         return this.name;
     }
-    
-    @Override
-    public String getPropertyName() {
-        return PowerPlant.PROPERTY_NAME;
-    }
-    
-    public double getSpeedInMph() {
-        return this.speedInMph;
-    }
-    
+
     public boolean isValidOn(VehicleType type) {
         return this.validMap.containsKey(type) && this.validMap.get(type);
     }
