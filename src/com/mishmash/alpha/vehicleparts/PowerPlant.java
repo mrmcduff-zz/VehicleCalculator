@@ -14,6 +14,7 @@ public class PowerPlant extends UnaryVehicleProperty{
     
     private double speedInMph;
     private static final String PROPERTY_NAME = "Powerplant";
+    public static final String SPEED_IN_MPH_KEY = "SpeedInMPH";
     
     public PowerPlant(String name, double speedInMph) {
         this(name, speedInMph, null);

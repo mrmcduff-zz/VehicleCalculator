@@ -1,7 +1,14 @@
 package com.mishmash.alpha;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 public enum VehicleType {
-    BICYCLE, TRICYCLE, SCOOTER;
+    BICYCLE, TRICYCLE, SCOOTER, INVALID;
+
+    public static final List<String> VALID_TYPE_STRINGS = 
+            Lists.newArrayList(BICYCLE.toString(), TRICYCLE.toString(), SCOOTER.toString());
     
     @Override
     public String toString() {
@@ -16,5 +23,16 @@ public enum VehicleType {
             return "Unknown type";
         }
     }
-
+    
+    public static VehicleType fromString(String s) {
+        VehicleType typeFromString = INVALID;
+        for (VehicleType type : VehicleType.values()) {
+            if (type.toString().equals(s)) {
+                typeFromString = type;
+                break;
+            }
+        }
+        return typeFromString;
+    }
+    
 }

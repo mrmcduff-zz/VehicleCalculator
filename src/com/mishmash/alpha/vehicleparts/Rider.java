@@ -1,10 +1,12 @@
 package com.mishmash.alpha.vehicleparts;
 
+
 public class Rider implements IVehicleProperty {
 
     private String name;
     private static final String PROPERTY_NAME = "Riders";
     private double rideTimeInMinutes;
+    public static final String RIDE_TIME_IN_MINUTES_KEY = "RideTimeInMinutes";
     
     public Rider(String name, double rideTimeInMinutes) {
         this.name = name;
@@ -24,5 +26,6 @@ public class Rider implements IVehicleProperty {
     public double getRideTimeInMinutes() {
         return this.rideTimeInMinutes;
     }
+
 
 }

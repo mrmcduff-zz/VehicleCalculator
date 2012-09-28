@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.mishmash.alpha.VehicleType;
 
 public class Wheel implements IVehicleProperty, IDistanceModifierProperty {
 
     private String name;
     private static final String PROPERTY_NAME = "Wheels";
+    public static final String FRONT = "Front";
+    public static final String REAR = "Rear";
     private double timeModifierValue;
     private double speedModifierValue;
     private List<Map<VehicleType, Boolean>> tirePositionMapList = new ArrayList<Map<VehicleType, Boolean> >();
@@ -62,6 +63,8 @@ public class Wheel implements IVehicleProperty, IDistanceModifierProperty {
     public boolean hasAllValidModifiers() {
         return this.timeModifierValue > 0 && this.speedModifierValue > 0;
     }
+
+
 
 }
     

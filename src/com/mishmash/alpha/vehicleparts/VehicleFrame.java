@@ -1,7 +1,6 @@
 package com.mishmash.alpha.vehicleparts;
 
 import java.util.List;
-
 import com.mishmash.alpha.VehicleType;
 
 public class VehicleFrame extends UnaryVehicleProperty implements IDistanceModifierProperty {
@@ -39,4 +38,5 @@ public class VehicleFrame extends UnaryVehicleProperty implements IDistanceModif
     public boolean hasAllValidModifiers() {
         return this.timeModifierValue > 0 && this.speedModifierValue > 0;
     }
+
 }
