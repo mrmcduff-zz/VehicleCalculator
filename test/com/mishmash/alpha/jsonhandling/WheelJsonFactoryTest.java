@@ -32,10 +32,6 @@ public class WheelJsonFactoryTest {
         fail("Not yet implemented");
     }
 
-    @Test
-    public void testConstructSingleWheelFromJsonObjectWithAllParts() {
-        fail("Not yet implemented");
-    }
 
     @Test
     public void testGetValidVehiclesForWheel() {
@@ -47,6 +43,12 @@ public class WheelJsonFactoryTest {
         List<VehicleType> frontWheels = WheelJsonFactory.getValidVehiclesForWheel(jobj, Wheel.FRONT);
         Assert.assertArrayEquals(Lists.newArrayList(VehicleType.BICYCLE, VehicleType.TRICYCLE).toArray(),
                 frontWheels.toArray());
+        assertFalse(frontWheels.contains(VehicleType.SCOOTER));
+        assertFalse(frontWheels.contains(VehicleType.INVALID));
+        
+        List<VehicleType> rearWheels = WheelJsonFactory.getValidVehiclesForWheel(jobj, Wheel.REAR);
+        VehicleType[] expected = new VehicleType[] { VehicleType.BICYCLE };
+        Assert.assertArrayEquals(expected, rearWheels.toArray());
 //        int answer = JOptionPane.showConfirmDialog(null, jobj.toString(), 
 //                "Does this look okay?", JOptionPane.YES_NO_OPTION);
 //        assertEquals(0, answer);

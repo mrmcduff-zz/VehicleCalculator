@@ -31,29 +31,18 @@ public class WheelJsonFactory {
         return wheelList;
     }
     
+    @SuppressWarnings("unchecked")
     public static Wheel getSingleWheel(JsonElement jsonElement) {
         Wheel wheel = null;
-        if (jsonElement != null && jsonElement.isJsonObject()) {
-            JsonObject jobj = jsonElement.getAsJsonObject();
-            boolean hasParts = true;
-            for (String s : requiredPartNames) { 
-                hasParts = hasParts && jobj.has(s);
-            }
-        }
-        return wheel;
-    }
-    
-    @SuppressWarnings("unchecked")
-    protected static Wheel constructSingleWheelFromJsonObjectWithAllParts(JsonObject jobj){
-        Wheel wheel = null;
-        if (jobj != null) {
+        JsonObject wheelObject = FactoryUtils.getVerifiedJsonObject(jsonElement, requiredPartNames);
+        if (wheelObject != null) {
             try {
-                String name = jobj.getAsJsonObject(IVehicleProperty.NAME_KEY).getAsString();
+                String name = wheelObject.get(IVehicleProperty.NAME_KEY).getAsString();
                 double speedModifierPercentage = 
-                        jobj.getAsJsonObject(IDistanceModifierProperty.SPEED_MODIFIER_KEY).getAsDouble();
+                        wheelObject.get(IDistanceModifierProperty.SPEED_MODIFIER_KEY).getAsDouble();
                 double timeModifierPercentage = 
-                        jobj.getAsJsonObject(IDistanceModifierProperty.TIME_MODIFIER_KEY).getAsDouble();
-                JsonObject validOnObject = jobj.getAsJsonObject(IVehicleProperty.VALID_ON_KEY);
+                        wheelObject.get(IDistanceModifierProperty.TIME_MODIFIER_KEY).getAsDouble();
+                JsonObject validOnObject = wheelObject.getAsJsonObject(IVehicleProperty.VALID_ON_KEY);
                 List<VehicleType> frontWheelTypes = getValidVehiclesForWheel(validOnObject, Wheel.FRONT);
                 List<VehicleType> rearWheelTypes = getValidVehiclesForWheel(validOnObject, Wheel.REAR);
                 wheel = new Wheel(name, timeModifierPercentage, 

@@ -1,0 +1,145 @@
+{
+	"Riders": [
+		{ "Name": "Tom", "RideTimeInMinutes": 5 },
+		{ "Name": "Jane", "RideTimeInMinutes": 8 },
+		{ "Name": "Bill", "RideTimeInMinutes": 22 },
+		{ "Name": "Sara", "RideTimeInMinutes": 60 },
+		{ "Name": "Curtis", "RideTimeInMinutes": 16 },
+		{ "Name": "Racheal", "RideTimeInMinutes": 32 },
+		{ "Name": "Jeremy", "RideTimeInMinutes": 51 },
+		{ "Name": "Eileen", "RideTimeInMinutes": 14 },
+		{ "Name": "Daryl", "RideTimeInMinutes": 44 },
+		{ "Name": "Helen", "RideTimeInMinutes": 39 }
+	],
+	
+	"Wheels": [
+		{
+			"Name": "All-Terrain Wheel",
+			"TimeModifierPercentage": 0,
+			"SpeedModifierPercentage": 0,
+			"ValidOn": {
+				"BicycleFront" : true,
+				"BicycleRear" : true,
+				"TricycleFront" : true,
+				"TricycleRear" : false,
+				"ScooterFront" : true,
+				"ScooterRear" : true
+			}
+		},
+		{
+			"Name": "Light Wheel",
+			"TimeModifierPercentage": 10,
+			"SpeedModifierPercentage": 0,
+			"ValidOn": {
+				"BicycleFront" : true,
+				"BicycleRear" : true,
+				"TricycleFront" : true,
+				"TricycleRear" : false,
+				"ScooterFront" : true,
+				"ScooterRear" : true
+			}
+		},
+		{
+			"Name": "Fast Wheel",
+			"TimeModifierPercentage": 0,
+			"SpeedModifierPercentage": 5,
+			"ValidOn": {
+				"BicycleFront" : true,
+				"BicycleRear" : true,
+				"TricycleFront" : true,
+				"TricycleRear" : false,
+				"ScooterFront" : true,
+				"ScooterRear" : true
+			}
+		},
+		{
+			"Name": "Two Wheel w/ Axel",
+			"TimeModifierPercentage": 0,
+			"SpeedModifierPercentage": -60,
+			"ValidOn": {
+				"BicycleFront" : false,
+				"BicycleRear" : false,
+				"TricycleFront" : false,
+				"TricycleRear" : true,
+				"ScooterFront" : false,
+				"ScooterRear" : false
+			}
+		},
+		{
+			"Name": "Two Fast Wheels w/ Axel",
+			"TimeModifierPercentage": 0,
+			"SpeedModifierPercentage": -3,
+			"ValidOn": {
+				"BicycleFront" : false,
+				"BicycleRear" : false,
+				"TricycleFront" : false,
+				"TricycleRear" : true,
+				"ScooterFront" : false,
+				"ScooterRear" : false
+			}
+		}
+	],
+	
+	"Frames": [
+		{
+			"Name": "Standard Frame",
+			"TimeModifierPercentage": 0,
+			"SpeedModifierPercentage": 0,
+			"ValidOn": {
+				"Bicycle" : true,
+				"Tricycle" : true,
+				"Scooter" : true
+			}
+		},
+		{
+			"Name": "Light Frame",
+			"TimeModifierPercentage": 25,
+			"SpeedModifierPercentage": 0,
+			"ValidOn": {
+				"Bicycle" : true,
+				"Tricycle" : true,
+				"Scooter" : true
+			}
+		},
+		{
+			"Name": "Aerodynamic Frame",
+			"TimeModifierPercentage": 0,
+			"SpeedModifierPercentage": 35,
+			"ValidOn": {
+				"Bicycle" : true,
+				"Tricycle" : true,
+				"Scooter" : true
+			}
+		}
+	],
+	
+	"Powerplant": [
+		{
+			"Name": "Pedals",
+			"SpeedInMPH": 20,
+			"ValidOn": {
+				"Bicycle" : true,
+				"Tricycle" : true,
+				"Scooter" : false
+			}
+		},
+		{
+			"Name": "50cc Motor",
+			"SpeedInMPH": 40,
+			"ValidOn": {
+				"Bicycle" : false,
+				"Tricycle" : false,
+				"Scooter" : true
+			}
+		},
+		{
+			"Name": "100cc Motor",
+			"SpeedInMPH": 60,
+			"ValidOn": {
+				"Bicycle" : false,
+				"Tricycle" : false,
+				"Scooter" : true
+			}
+		}
+	]
+}
