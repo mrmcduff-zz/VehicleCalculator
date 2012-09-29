@@ -3,21 +3,29 @@ package com.mishmash.alpha.vehicleparts;
 import java.util.List;
 import com.mishmash.alpha.VehicleType;
 
-public class VehicleFrame extends UnaryVehicleProperty implements IDistanceModifierPart {
+public class VehicleFrame implements IVehiclePart, IDistanceModifierPart {
 
     public static final String PROPERTY_NAME = "Frames";
     private double timeModifierValue;
     private double speedModifierValue;
+    private String name;
+    private UnaryValidator validator = new UnaryValidator();
 
     public VehicleFrame(String name, double timeModifierPercentage, double speedModifierPercentage,
             List<VehicleType> validTypes) {
-        super(name, validTypes);
+        this.name = name;
         this.timeModifierValue = PartUtils.convertFromPercentageToModifier(timeModifierPercentage);
         this.speedModifierValue = PartUtils.convertFromPercentageToModifier(speedModifierPercentage);
+        this.validator.setValidTypes(validTypes);
     }
     
     public VehicleFrame(String name, double timeModifierPercentage, double speedModifierPercentage) {
         this(name, timeModifierPercentage, speedModifierPercentage, null);
+    }
+    
+    @Override 
+    public String getName() {
+        return this.name;
     }
     
     @Override
@@ -46,14 +54,20 @@ public class VehicleFrame extends UnaryVehicleProperty implements IDistanceModif
      */
     @Override
     public final boolean equals(Object other) {
-        boolean answer = super.equals(other);
+        boolean answer = true;
         if (other instanceof VehicleFrame) {
             VehicleFrame otherFrame = (VehicleFrame) other;
-//            answer = answer && (otherFrame.getName().equals(this.getName()));
+            answer = answer && (otherFrame.getName().equals(this.getName()));
             answer = answer && PartUtils.doubleEquals(otherFrame.getSpeedModifierFactor(),
                     this.getSpeedModifierFactor());
             answer = answer && PartUtils.doubleEquals(otherFrame.getTimeModifierFactor(),
                     this.getTimeModifierFactor());
+            if (otherFrame.getValidator() != null) {
+                answer = answer && otherFrame.getValidator().equals(this.validator);
+            } else {
+                answer = false;
+            }
+            
         } else {
             answer = false;
         }
@@ -62,14 +76,21 @@ public class VehicleFrame extends UnaryVehicleProperty implements IDistanceModif
     
     @Override
     public final int hashCode() {
-        int hash = super.hashCode();
+        int hash = this.getName().hashCode();
         // Both magic numbers below are simply four digit primes, chosen
         // for no reason other than primality and magnitude.
         hash += (int) (IDistanceModifierPart.SPEED_MODIFIER_KEY.hashCode() * 
                 this.getSpeedModifierFactor());
         hash += (int) (IDistanceModifierPart.TIME_MODIFIER_KEY.hashCode() * 
                 this.getTimeModifierFactor());
+        hash += this.validator.hashCode();
+        
         return hash;
+    }
+
+    @Override
+    public IVehicleTypeValidator getValidator() {
+        return this.validator;
     }
 
 }

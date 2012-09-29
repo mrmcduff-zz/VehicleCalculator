@@ -6,8 +6,9 @@ package com.mishmash.alpha;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import com.mishmash.alpha.vehicleparts.IDistanceModifierPart;
-import com.mishmash.alpha.vehicleparts.UnaryVehicleProperty;
+import com.mishmash.alpha.vehicleparts.IVehiclePart;
 import com.mishmash.alpha.vehicleparts.PowerPlant;
 import com.mishmash.alpha.vehicleparts.Rider;
 import com.mishmash.alpha.vehicleparts.VehicleFrame;
@@ -24,8 +25,8 @@ public class Vehicle {
     private PowerPlant powerPlant;
     private VehicleType type;
     private boolean hasBeenValidated = false;
-    private List<UnaryVehicleProperty> unaryProperties = new ArrayList<UnaryVehicleProperty>();
-    private List<IDistanceModifierPart> distanceModifiers = new ArrayList<IDistanceModifierPart>();
+    private List<IVehiclePart> parts = Lists.newArrayList();
+    private List<IDistanceModifierPart> distanceModifiers = Lists.newArrayList();
     private List<Wheel> wheels = new ArrayList<Wheel>();
     private final int REQUIRED_WHEEL_COUNT = 2;
     private final double MINUTES_TO_HOURS_CONVERTER = 1/60.0;
@@ -38,7 +39,11 @@ public class Vehicle {
         this.powerPlant = powerPlant;
         this.wheels = wheels;
         
-        sortUnaryProperties();
+        parts.add(rider);
+        parts.add(vehicleFrame);
+        parts.add(powerPlant);
+        parts.addAll(wheels);
+
         sortModifierProperties();
     }
     
@@ -49,16 +54,13 @@ public class Vehicle {
         } else {
             answer = (rider != null);
             if (answer) {
-                answer = answer && unaryPropertiesValidForType();
+                answer = answer && hasValidPartsForType();
             }
             
             if (answer) {
                 answer = answer && modifierPropertiesValid();
             }
             
-            if (answer) {
-                answer =  answer && wheelsValidForTypeAndLocation();
-            }
             
             // mark the flag
             hasBeenValidated = true;
@@ -88,9 +90,33 @@ public class Vehicle {
         return distance;
     }
     
-    private void sortUnaryProperties() {
-        this.unaryProperties.add(this.frame);
-        this.unaryProperties.add(this.powerPlant);
+    private boolean hasValidPartsForType() {
+        boolean isValid = true;
+        for (IVehiclePart part : parts) {
+            if (!(part instanceof Wheel))  {
+                isValid = isValid && 
+                        (part.getValidator() != null) &&
+                        part.getValidator().isValidForType(this.type);
+                
+                if (!isValid) {
+                    break;
+                }
+            }
+        }
+        
+        if (isValid) {
+            for (int i = 0; i < wheels.size(); ++i) {
+                isValid = isValid && wheels.get(i).getValidator() != null &&
+                        wheels.get(i).getValidator().isValidForTypeWithParameters(
+                                this.type, PartPosition.fromInt(i).toString());
+                
+                if (!isValid) {
+                    break;
+                }
+            }
+        }
+        
+        return isValid;
     }
     
     private void sortModifierProperties() {
@@ -111,29 +137,7 @@ public class Vehicle {
         return answer;
     }
     
-    private boolean unaryPropertiesValidForType() {
-        boolean answer = true;
-        for(UnaryVehicleProperty uvp : unaryProperties) {
-            if (!answer) {
-                break;
-            }
-            answer = answer && (uvp != null) && (uvp.isValidOn(this.type));
-        }
-        
-        return answer;
-    }
-    
-    private boolean wheelsValidForTypeAndLocation() {
-        boolean answer = wheels.size() == REQUIRED_WHEEL_COUNT;
-        for (int i = 0; i < wheels.size(); ++i) {
-            if (!answer) {
-                break;
-            }
-            answer = answer && wheels.get(i) != null && wheels.get(i).isValidFor(this.type, i);
-        }
-        return answer;
-    }
-    
+   
     
 
 }

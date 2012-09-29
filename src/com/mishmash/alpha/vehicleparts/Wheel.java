@@ -1,9 +1,9 @@
 package com.mishmash.alpha.vehicleparts;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+
+import com.mishmash.alpha.PartPosition;
 import com.mishmash.alpha.VehicleType;
 
 public class Wheel implements IVehiclePart, IDistanceModifierPart {
@@ -12,19 +12,18 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
     public static final String PROPERTY_NAME = "Wheels";
     private double timeModifierValue;
     private double speedModifierValue;
-    private List<Map<VehicleType, Boolean>> tirePositionMapList = new ArrayList<Map<VehicleType, Boolean> >();
+    private WheelPositionValidator positionValidator = new WheelPositionValidator();
     
     public Wheel(String name, double timeModifierPercentage, double speedModifierPercentage, List<VehicleType>... orderedValidPositions) {
         this.name = name;
         this.timeModifierValue = PartUtils.convertFromPercentageToModifier(timeModifierPercentage);
         this.speedModifierValue = PartUtils.convertFromPercentageToModifier(speedModifierPercentage);
         
-        for (List<VehicleType> list : orderedValidPositions) {
-            Map<VehicleType, Boolean> positionMap = new HashMap<VehicleType, Boolean>();
-            for (VehicleType type : list) {
-                positionMap.put(type, true);
+        for (int i = 0; i < orderedValidPositions.length; ++i) {
+            PartPosition temp = PartPosition.fromInt(i);
+            if (temp != PartPosition.INVALID) {
+                positionValidator.setValidTypesForPosition(temp, orderedValidPositions[i]);
             }
-            this.tirePositionMapList.add(positionMap);
         }
     }
     
@@ -48,18 +47,11 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
         return this.speedModifierValue;
     }
     
-    public boolean isValidFor(VehicleType type, int position) {
-        boolean isValid = false;
-        if (this.tirePositionMapList.size() > position) {
-            Map<VehicleType, Boolean> positionMap = tirePositionMapList.get(position);
-            isValid = positionMap.containsKey(type) && positionMap.get(type);
-        }
-        return isValid;
+    @Override
+    public IVehicleTypeValidator getValidator() {
+        return this.positionValidator;
     }
     
-    public int getNumberOfValidPositions() {
-        return this.tirePositionMapList.size();
-    }
     
     @Override
     public boolean hasAllValidModifiers() {
@@ -78,22 +70,13 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
             answer = answer && 
                     PartUtils.doubleEquals(otherWheel.getTimeModifierFactor(), 
                             this.getTimeModifierFactor());
-            answer = answer && otherWheel.getNumberOfValidPositions() 
-                    == this.getNumberOfValidPositions();
-            if (answer) {
-                for (int i = 0; i < this.tirePositionMapList.size(); ++i) {
-                    for (VehicleType type : VehicleType.values()) {
-                        answer = answer && (this.isValidFor(type, i) ==
-                                otherWheel.isValidFor(type, i));
-                        if (!answer) {
-                            break;
-                        }
-                    }
-                    if (!answer) {
-                        break;
-                    }
-                }
+            if (otherWheel.getValidator() != null) {
+                answer = answer && otherWheel.getValidator().equals(this.positionValidator);
+            } else {
+                answer = false;
             }
+            
+            
         } else {
             answer = false;
         }
@@ -107,13 +90,7 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
                 this.getSpeedModifierFactor());
         hash += (int) (IDistanceModifierPart.TIME_MODIFIER_KEY.hashCode() *
                 this.getTimeModifierFactor());
-        for (int i = 0; i < this.tirePositionMapList.size(); ++i) {
-            for (VehicleType type : VehicleType.values()) {
-                if (this.isValidFor(type, i)) {
-                    hash += type.hashCode();
-                }
-            }
-        }
+        hash += this.positionValidator.hashCode();
         
         return hash;
     }

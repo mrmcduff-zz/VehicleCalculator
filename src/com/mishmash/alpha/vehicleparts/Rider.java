@@ -7,6 +7,7 @@ public class Rider implements IVehiclePart {
     public static final String PROPERTY_NAME = "Riders";
     private double rideTimeInMinutes;
     public static final String RIDE_TIME_IN_MINUTES_KEY = "RideTimeInMinutes";
+    private UniversalValidator validator = new UniversalValidator();
     
     public Rider(String name, double rideTimeInMinutes) {
         this.name = name;
@@ -25,6 +26,11 @@ public class Rider implements IVehiclePart {
     
     public double getRideTimeInMinutes() {
         return this.rideTimeInMinutes;
+    }
+    
+    @Override
+    public IVehicleTypeValidator getValidator() {
+        return this.validator;
     }
     
     @Override

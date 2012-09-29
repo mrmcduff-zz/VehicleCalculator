@@ -16,5 +16,6 @@ public interface IVehiclePart {
     
     public String getName();
     public String getPropertyName();
+    public IVehicleTypeValidator getValidator();
 
 }
