@@ -13,7 +13,7 @@ import com.mishmash.alpha.VehicleType;
 public class PowerPlant extends UnaryVehicleProperty{
     
     private double speedInMph;
-    private static final String PROPERTY_NAME = "Powerplant";
+    public static final String PROPERTY_NAME = "Powerplant";
     public static final String SPEED_IN_MPH_KEY = "SpeedInMPH";
     
     public PowerPlant(String name, double speedInMph) {
@@ -32,6 +32,27 @@ public class PowerPlant extends UnaryVehicleProperty{
     
     public double getSpeedInMph() {
         return this.speedInMph;
+    }
+    
+    @Override
+    public final boolean equals(Object other) {
+        boolean answer = super.equals(other);
+        if (other instanceof PowerPlant) {
+            PowerPlant otherPlant = (PowerPlant) other;
+            answer = answer && 
+                    (PartUtils.doubleEquals(otherPlant.getSpeedInMph(), 
+                            this.getSpeedInMph()));
+        } else {
+            answer = false;
+        }
+        return answer;
+    }
+    
+    @Override
+    public final int hashCode() {
+        int hash = super.hashCode();
+        hash += (int) (PowerPlant.SPEED_IN_MPH_KEY.hashCode() * this.speedInMph);
+        return hash;
     }
     
 }

@@ -3,28 +3,55 @@ package com.mishmash.alpha.jsonhandling;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mishmash.alpha.VehicleType;
+import com.mishmash.alpha.vehicleparts.VehicleFrame;
 import com.mishmash.alpha.vehicleparts.Wheel;
 
 public class WheelJsonFactoryTest {
 
+    private static String rawData = "";
+    private static JsonArray jsonArray = null;
+    
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
+        rawData = IOUtils.toString( 
+                RiderJsonFactoryTest.class.getResourceAsStream(TestUtils.LOCAL_SOURCE),
+                "UTF-8");
+        List<String> categoryList = Lists.newArrayList(Wheel.PROPERTY_NAME);
+        Map<String, JsonArray> categories = DataParser.seperateCategories(rawData, categoryList);
+        jsonArray = categories.get(Wheel.PROPERTY_NAME);
     }
 
     @Test
     public void testGetWheels() {
-        fail("Not yet implemented");
+        assertEquals(5, jsonArray.size());
+        List<Wheel> wheels = WheelJsonFactory.getWheels(jsonArray);
+        assertEquals(jsonArray.size(), wheels.size());
+        
+        JsonArray modifiedArray = new JsonArray();
+        for (JsonElement element : jsonArray) {
+            modifiedArray.add(element);
+            modifiedArray.add(new JsonObject());
+        } 
+        modifiedArray.add(new JsonObject());
+        modifiedArray.add(new JsonArray());
+        
+        List<Wheel> otherWheels = WheelJsonFactory.getWheels(modifiedArray);
+        assertArrayEquals(wheels.toArray(), otherWheels.toArray());
+
     }
 
     @Test

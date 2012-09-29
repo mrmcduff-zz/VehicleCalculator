@@ -8,12 +8,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mishmash.alpha.VehicleType;
-import com.mishmash.alpha.vehicleparts.IVehicleProperty;
+import com.mishmash.alpha.vehicleparts.IVehiclePart;
 import com.mishmash.alpha.vehicleparts.PowerPlant;
 
 public class PowerPlantJsonFactory {
-    private static final List<String> requiredPartNames = Lists.newArrayList(IVehicleProperty.NAME_KEY,
-            IVehicleProperty.VALID_ON_KEY, PowerPlant.SPEED_IN_MPH_KEY);
+    private static final List<String> requiredPartNames = Lists.newArrayList(IVehiclePart.NAME_KEY,
+            IVehiclePart.VALID_ON_KEY, PowerPlant.SPEED_IN_MPH_KEY);
 
     public static List<PowerPlant> getPowerPlants(JsonArray jsonArray) {
         List<PowerPlant> powerPlants = new ArrayList<PowerPlant>();
@@ -32,14 +32,16 @@ public class PowerPlantJsonFactory {
         JsonObject plantObject = FactoryUtils.getVerifiedJsonObject(element, requiredPartNames);
         if (plantObject != null) {
             try {
-                String name = plantObject.get(IVehicleProperty.NAME_KEY).getAsString();
+                String name = plantObject.get(IVehiclePart.NAME_KEY).getAsString();
                 double baseSpeed = plantObject.get(PowerPlant.SPEED_IN_MPH_KEY).getAsDouble();
                 List<VehicleType> validTypes = 
                         FactoryUtils.getValidVehiclesFromJsonObject(
-                                plantObject.getAsJsonObject(IVehicleProperty.VALID_ON_KEY));
+                                plantObject.getAsJsonObject(IVehiclePart.VALID_ON_KEY));
                 plant = new PowerPlant(name, baseSpeed, validTypes);
             } catch (ClassCastException ccex) {
                 ccex.printStackTrace();
+            } catch (NumberFormatException nfx) {
+                nfx.printStackTrace();
             }
         }
         return plant;

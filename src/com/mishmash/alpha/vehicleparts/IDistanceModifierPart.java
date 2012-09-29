@@ -1,6 +1,6 @@
 package com.mishmash.alpha.vehicleparts;
 
-public interface IDistanceModifierProperty {
+public interface IDistanceModifierPart {
     public static final String TIME_MODIFIER_KEY = "TimeModifierPercentage";
     public static final String SPEED_MODIFIER_KEY = "SpeedModifierPercentage";
     

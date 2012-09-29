@@ -52,7 +52,6 @@ public class DataParserTest {
         List<String> categoryList = Lists.newArrayList(ridersKey, wheelsKey, framesKey, powerPlantKey);
         Map<String, JsonArray> categories = DataParser.seperateCategories(rawData, categoryList);
         assertEquals(4, categories.size());
-
         
 
 

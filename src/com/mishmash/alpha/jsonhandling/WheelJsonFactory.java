@@ -9,15 +9,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mishmash.alpha.VehicleType;
-import com.mishmash.alpha.vehicleparts.IDistanceModifierProperty;
-import com.mishmash.alpha.vehicleparts.IVehicleProperty;
+import com.mishmash.alpha.vehicleparts.IDistanceModifierPart;
+import com.mishmash.alpha.vehicleparts.IVehiclePart;
 import com.mishmash.alpha.vehicleparts.Wheel;
 
 public class WheelJsonFactory {
     
-    private static final List<String> requiredPartNames = Lists.newArrayList(IVehicleProperty.NAME_KEY,
-            IVehicleProperty.VALID_ON_KEY, IDistanceModifierProperty.SPEED_MODIFIER_KEY,
-            IDistanceModifierProperty.TIME_MODIFIER_KEY);
+    private static final List<String> requiredPartNames = Lists.newArrayList(IVehiclePart.NAME_KEY,
+            IVehiclePart.VALID_ON_KEY, IDistanceModifierPart.SPEED_MODIFIER_KEY,
+            IDistanceModifierPart.TIME_MODIFIER_KEY);
     
     public static List<Wheel> getWheels(JsonArray jsonArray) {
         List<Wheel> wheelList = new ArrayList<Wheel>();
@@ -37,18 +37,21 @@ public class WheelJsonFactory {
         JsonObject wheelObject = FactoryUtils.getVerifiedJsonObject(jsonElement, requiredPartNames);
         if (wheelObject != null) {
             try {
-                String name = wheelObject.get(IVehicleProperty.NAME_KEY).getAsString();
+                String name = wheelObject.get(IVehiclePart.NAME_KEY).getAsString();
                 double speedModifierPercentage = 
-                        wheelObject.get(IDistanceModifierProperty.SPEED_MODIFIER_KEY).getAsDouble();
+                        wheelObject.get(IDistanceModifierPart.SPEED_MODIFIER_KEY).getAsDouble();
                 double timeModifierPercentage = 
-                        wheelObject.get(IDistanceModifierProperty.TIME_MODIFIER_KEY).getAsDouble();
-                JsonObject validOnObject = wheelObject.getAsJsonObject(IVehicleProperty.VALID_ON_KEY);
+                        wheelObject.get(IDistanceModifierPart.TIME_MODIFIER_KEY).getAsDouble();
+                JsonObject validOnObject = wheelObject.getAsJsonObject(IVehiclePart.VALID_ON_KEY);
                 List<VehicleType> frontWheelTypes = getValidVehiclesForWheel(validOnObject, Wheel.FRONT);
                 List<VehicleType> rearWheelTypes = getValidVehiclesForWheel(validOnObject, Wheel.REAR);
                 wheel = new Wheel(name, timeModifierPercentage, 
                         speedModifierPercentage, frontWheelTypes, rearWheelTypes);
             } catch (ClassCastException ccex) {
                 ccex.printStackTrace();
+            } catch (NumberFormatException nfx) {
+                // Caught when getAsDouble fails.
+                nfx.printStackTrace();
             }
         }
         return wheel;

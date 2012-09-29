@@ -8,16 +8,16 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mishmash.alpha.VehicleType;
-import com.mishmash.alpha.vehicleparts.IDistanceModifierProperty;
-import com.mishmash.alpha.vehicleparts.IVehicleProperty;
+import com.mishmash.alpha.vehicleparts.IDistanceModifierPart;
+import com.mishmash.alpha.vehicleparts.IVehiclePart;
 import com.mishmash.alpha.vehicleparts.VehicleFrame;
 
 public class FrameJsonFactory {
-    private static final List<String> requiredPartNames = Lists.newArrayList(IVehicleProperty.NAME_KEY,
-            IVehicleProperty.VALID_ON_KEY, IDistanceModifierProperty.SPEED_MODIFIER_KEY,
-            IDistanceModifierProperty.TIME_MODIFIER_KEY);
+    private static final List<String> requiredPartNames = Lists.newArrayList(IVehiclePart.NAME_KEY,
+            IVehiclePart.VALID_ON_KEY, IDistanceModifierPart.SPEED_MODIFIER_KEY,
+            IDistanceModifierPart.TIME_MODIFIER_KEY);
     
-    public static List<VehicleFrame> getVehicleFrame(JsonArray jsonArray) {
+    public static List<VehicleFrame> getVehicleFrames(JsonArray jsonArray) {
         List<VehicleFrame> frames = new ArrayList<VehicleFrame>();
         VehicleFrame temp = null;
         for (JsonElement element : jsonArray) {
@@ -34,15 +34,17 @@ public class FrameJsonFactory {
         JsonObject frameObject = FactoryUtils.getVerifiedJsonObject(element, requiredPartNames);
         if (frameObject != null) {
             try {
-                String name = frameObject.get(IVehicleProperty.NAME_KEY).getAsString();
-                double timeModifierPercentage = frameObject.get(IDistanceModifierProperty.TIME_MODIFIER_KEY).getAsDouble();
-                double speedModifierPercentage = frameObject.get(IDistanceModifierProperty.SPEED_MODIFIER_KEY).getAsDouble();
+                String name = frameObject.get(IVehiclePart.NAME_KEY).getAsString();
+                double timeModifierPercentage = frameObject.get(IDistanceModifierPart.TIME_MODIFIER_KEY).getAsDouble();
+                double speedModifierPercentage = frameObject.get(IDistanceModifierPart.SPEED_MODIFIER_KEY).getAsDouble();
                 List<VehicleType> validTypes = 
                         FactoryUtils.getValidVehiclesFromJsonObject(
-                                frameObject.getAsJsonObject(IVehicleProperty.VALID_ON_KEY));
+                                frameObject.getAsJsonObject(IVehiclePart.VALID_ON_KEY));
                 frame = new VehicleFrame(name, timeModifierPercentage, speedModifierPercentage, validTypes);
             } catch (ClassCastException ccex) {
                 ccex.printStackTrace();
+            } catch (NumberFormatException nfx) {
+                nfx.printStackTrace();
             }
         }
         return frame;

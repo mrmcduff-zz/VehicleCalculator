@@ -6,7 +6,7 @@ package com.mishmash.alpha;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mishmash.alpha.vehicleparts.IDistanceModifierProperty;
+import com.mishmash.alpha.vehicleparts.IDistanceModifierPart;
 import com.mishmash.alpha.vehicleparts.UnaryVehicleProperty;
 import com.mishmash.alpha.vehicleparts.PowerPlant;
 import com.mishmash.alpha.vehicleparts.Rider;
@@ -25,7 +25,7 @@ public class Vehicle {
     private VehicleType type;
     private boolean hasBeenValidated = false;
     private List<UnaryVehicleProperty> unaryProperties = new ArrayList<UnaryVehicleProperty>();
-    private List<IDistanceModifierProperty> distanceModifiers = new ArrayList<IDistanceModifierProperty>();
+    private List<IDistanceModifierPart> distanceModifiers = new ArrayList<IDistanceModifierPart>();
     private List<Wheel> wheels = new ArrayList<Wheel>();
     private final int REQUIRED_WHEEL_COUNT = 2;
     private final double MINUTES_TO_HOURS_CONVERTER = 1/60.0;
@@ -74,7 +74,7 @@ public class Vehicle {
             double speed = powerPlant.getSpeedInMph();
             double speedModifier = 1.0;
             double timeModifier = 1.0;
-            for (IDistanceModifierProperty idmp : this.distanceModifiers) {
+            for (IDistanceModifierPart idmp : this.distanceModifiers) {
                 // Stacking modifiers multiplicatively
                 speedModifier *= idmp.getSpeedModifierFactor();
                 timeModifier *= idmp.getTimeModifierFactor();
@@ -102,7 +102,7 @@ public class Vehicle {
     
     private boolean modifierPropertiesValid() {
         boolean answer = true;
-        for(IDistanceModifierProperty idmp : distanceModifiers) {
+        for(IDistanceModifierPart idmp : distanceModifiers) {
             if (!answer) {
                 break;
             }

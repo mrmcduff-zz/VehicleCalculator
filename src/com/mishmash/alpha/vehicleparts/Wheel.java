@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import com.mishmash.alpha.VehicleType;
 
-public class Wheel implements IVehicleProperty, IDistanceModifierProperty {
+public class Wheel implements IVehiclePart, IDistanceModifierPart {
 
     private String name;
-    private static final String PROPERTY_NAME = "Wheels";
+    public static final String PROPERTY_NAME = "Wheels";
     public static final String FRONT = "Front";
     public static final String REAR = "Rear";
     private double timeModifierValue;
@@ -18,8 +18,8 @@ public class Wheel implements IVehicleProperty, IDistanceModifierProperty {
     
     public Wheel(String name, double timeModifierPercentage, double speedModifierPercentage, List<VehicleType>... orderedValidPositions) {
         this.name = name;
-        this.timeModifierValue = PropertyUtilities.convertFromPercentageToModifier(timeModifierPercentage);
-        this.speedModifierValue = PropertyUtilities.convertFromPercentageToModifier(speedModifierPercentage);
+        this.timeModifierValue = PartUtils.convertFromPercentageToModifier(timeModifierPercentage);
+        this.speedModifierValue = PartUtils.convertFromPercentageToModifier(speedModifierPercentage);
         
         for (List<VehicleType> list : orderedValidPositions) {
             Map<VehicleType, Boolean> positionMap = new HashMap<VehicleType, Boolean>();
@@ -59,9 +59,65 @@ public class Wheel implements IVehicleProperty, IDistanceModifierProperty {
         return isValid;
     }
     
+    public int getNumberOfValidPositions() {
+        return this.tirePositionMapList.size();
+    }
+    
     @Override
     public boolean hasAllValidModifiers() {
         return this.timeModifierValue > 0 && this.speedModifierValue > 0;
+    }
+    
+    @Override
+    public boolean equals(Object other) {
+        boolean answer = true;
+        if (other != null && other instanceof Wheel) {
+            Wheel otherWheel = (Wheel) other;
+            answer = answer && otherWheel.getName().equals(this.getName());
+            answer = answer && 
+                    PartUtils.doubleEquals(otherWheel.getSpeedModifierFactor(), 
+                            this.getSpeedModifierFactor());
+            answer = answer && 
+                    PartUtils.doubleEquals(otherWheel.getTimeModifierFactor(), 
+                            this.getTimeModifierFactor());
+            answer = answer && otherWheel.getNumberOfValidPositions() 
+                    == this.getNumberOfValidPositions();
+            if (answer) {
+                for (int i = 0; i < this.tirePositionMapList.size(); ++i) {
+                    for (VehicleType type : VehicleType.values()) {
+                        answer = answer && (this.isValidFor(type, i) ==
+                                otherWheel.isValidFor(type, i));
+                        if (!answer) {
+                            break;
+                        }
+                    }
+                    if (!answer) {
+                        break;
+                    }
+                }
+            }
+        } else {
+            answer = false;
+        }
+        return answer;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = this.getName().hashCode();
+        hash += (int) (IDistanceModifierPart.SPEED_MODIFIER_KEY.hashCode() *
+                this.getSpeedModifierFactor());
+        hash += (int) (IDistanceModifierPart.TIME_MODIFIER_KEY.hashCode() *
+                this.getTimeModifierFactor());
+        for (int i = 0; i < this.tirePositionMapList.size(); ++i) {
+            for (VehicleType type : VehicleType.values()) {
+                if (this.isValidFor(type, i)) {
+                    hash += type.hashCode();
+                }
+            }
+        }
+        
+        return hash;
     }
 
 
