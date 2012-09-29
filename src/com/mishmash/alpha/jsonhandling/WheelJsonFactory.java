@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mishmash.alpha.PartPosition;
 import com.mishmash.alpha.VehicleType;
 import com.mishmash.alpha.vehicleparts.IDistanceModifierPart;
 import com.mishmash.alpha.vehicleparts.IVehiclePart;
@@ -43,8 +44,8 @@ public class WheelJsonFactory {
                 double timeModifierPercentage = 
                         wheelObject.get(IDistanceModifierPart.TIME_MODIFIER_KEY).getAsDouble();
                 JsonObject validOnObject = wheelObject.getAsJsonObject(IVehiclePart.VALID_ON_KEY);
-                List<VehicleType> frontWheelTypes = getValidVehiclesForWheel(validOnObject, Wheel.FRONT);
-                List<VehicleType> rearWheelTypes = getValidVehiclesForWheel(validOnObject, Wheel.REAR);
+                List<VehicleType> frontWheelTypes = getValidVehiclesForWheel(validOnObject, PartPosition.FRONT.toString());
+                List<VehicleType> rearWheelTypes = getValidVehiclesForWheel(validOnObject, PartPosition.REAR.toString());
                 wheel = new Wheel(name, timeModifierPercentage, 
                         speedModifierPercentage, frontWheelTypes, rearWheelTypes);
             } catch (ClassCastException ccex) {

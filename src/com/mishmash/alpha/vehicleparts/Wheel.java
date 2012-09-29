@@ -10,8 +10,6 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
 
     private String name;
     public static final String PROPERTY_NAME = "Wheels";
-    public static final String FRONT = "Front";
-    public static final String REAR = "Rear";
     private double timeModifierValue;
     private double speedModifierValue;
     private List<Map<VehicleType, Boolean>> tirePositionMapList = new ArrayList<Map<VehicleType, Boolean> >();

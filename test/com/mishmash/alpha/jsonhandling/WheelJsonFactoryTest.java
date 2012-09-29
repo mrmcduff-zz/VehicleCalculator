@@ -16,6 +16,7 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mishmash.alpha.PartPosition;
 import com.mishmash.alpha.VehicleType;
 import com.mishmash.alpha.vehicleparts.VehicleFrame;
 import com.mishmash.alpha.vehicleparts.Wheel;
@@ -67,13 +68,13 @@ public class WheelJsonFactoryTest {
         jobj.addProperty("BicycleRear", true);
         jobj.addProperty("TricycleFront", true);
         jobj.addProperty("TricycleRear", false);
-        List<VehicleType> frontWheels = WheelJsonFactory.getValidVehiclesForWheel(jobj, Wheel.FRONT);
+        List<VehicleType> frontWheels = WheelJsonFactory.getValidVehiclesForWheel(jobj, PartPosition.FRONT.toString());
         Assert.assertArrayEquals(Lists.newArrayList(VehicleType.BICYCLE, VehicleType.TRICYCLE).toArray(),
                 frontWheels.toArray());
         assertFalse(frontWheels.contains(VehicleType.SCOOTER));
         assertFalse(frontWheels.contains(VehicleType.INVALID));
         
-        List<VehicleType> rearWheels = WheelJsonFactory.getValidVehiclesForWheel(jobj, Wheel.REAR);
+        List<VehicleType> rearWheels = WheelJsonFactory.getValidVehiclesForWheel(jobj, PartPosition.REAR.toString());
         VehicleType[] expected = new VehicleType[] { VehicleType.BICYCLE };
         Assert.assertArrayEquals(expected, rearWheels.toArray());
 //        int answer = JOptionPane.showConfirmDialog(null, jobj.toString(), 
