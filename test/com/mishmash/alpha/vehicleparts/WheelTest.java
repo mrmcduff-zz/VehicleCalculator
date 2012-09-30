@@ -49,6 +49,7 @@ public class WheelTest {
         assertTrue(w2.equals(w1));
         assertFalse(w1.equals(w3));
         assertFalse(w1.equals(w4));
+        assertFalse(w4.equals(null));
     }
     @Test
     public void testHashCode() {

@@ -4,9 +4,7 @@ public class PartUtils {
     public final static double PERCENTAGE_CONVERTER = 100.0;
     
     public static double convertFromPercentageToModifier(double percentage) {
-        double convertedValue = 0.0;
-        convertedValue = 1.0 + (percentage / PERCENTAGE_CONVERTER);
-        return convertedValue;
+        return 1.0 + (percentage / PERCENTAGE_CONVERTER);
     }
     
     public static boolean doubleEquals(double first, double second) {

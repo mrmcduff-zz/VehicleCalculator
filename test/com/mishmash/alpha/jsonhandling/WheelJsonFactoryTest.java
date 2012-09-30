@@ -69,6 +69,11 @@ public class WheelJsonFactoryTest {
                 PartPosition.FRONT.toString(), true);
         validationObject.addProperty(VehicleType.TRICYCLE.toString() +
                 PartPosition.REAR.toString(), false);
+        // At this point, the simpleWheel doesn't have a validation object
+        // so it should be null.
+        Wheel emptyWheel = WheelJsonFactory.getSingleWheel(simpleWheel);
+        assertNull(emptyWheel);
+        // Now we'll add it on and continue with the test.
         simpleWheel.add(IVehiclePart.VALID_ON_KEY, validationObject);
         
         Wheel wheel = WheelJsonFactory.getSingleWheel(simpleWheel);

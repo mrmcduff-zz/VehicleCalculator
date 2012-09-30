@@ -11,6 +11,9 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.mishmash.alpha.VehicleType;
+import com.mishmash.alpha.vehicleparts.IVehiclePart;
 import com.mishmash.alpha.vehicleparts.PowerPlant;
 
 public class PowerPlantJsonFactoryTest {
@@ -30,12 +33,23 @@ public class PowerPlantJsonFactoryTest {
 
     @Test
     public void testGetPowerPlants() {
-        fail("Not yet implemented");
+        assertEquals(3, jsonArray.size());
+        List<VehicleType> nonMotored = Lists.newArrayList(VehicleType.BICYCLE, VehicleType.TRICYCLE);
+        List<VehicleType> motored = Lists.newArrayList(VehicleType.SCOOTER);
+        PowerPlant p1 = new PowerPlant("Pedals", 20, nonMotored);
+        PowerPlant p2 = new PowerPlant("50cc Motor", 40, motored);
+        PowerPlant p3 = new PowerPlant("100cc Motor", 60, motored);
+        List<PowerPlant> expected = Lists.newArrayList(p1, p2, p3);
+        List<PowerPlant> actual = PowerPlantJsonFactory.getPowerPlants(jsonArray);
+        assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Test
     public void testGetSinglePowerPlant() {
-        fail("Not yet implemented");
+        JsonObject jsonPlant = new JsonObject();
+        jsonPlant.addProperty(IVehiclePart.NAME_KEY, "Test Plant");
+        jsonPlant.addProperty(PowerPlant.SPEED_IN_MPH_KEY, 20);
+
     }
 
 }

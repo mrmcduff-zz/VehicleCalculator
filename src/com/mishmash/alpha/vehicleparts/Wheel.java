@@ -12,8 +12,34 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
     public static final String PROPERTY_NAME = "Wheels";
     private double timeModifierValue;
     private double speedModifierValue;
+    
+    /**
+     * Used so other classes can determine the valid positions for this wheel.
+     */
     private WheelPositionValidator positionValidator = new WheelPositionValidator();
     
+    /**
+     * Constructor, and the only way to set the characteristics of a Wheel.
+     * 
+     * @param name
+     * A name for the type of wheel.
+     * 
+     * @param timeModifierPercentage
+     * Amount, expressed as a 100-based percentage, that this wheel affects the 
+     * time a rider can ride the vehicle. Values lower than -100 will create an invalid
+     * wheel.
+     * 
+     * @param speedModifierPercentage
+     * Amount, expressed as a 100-based percentage, that this wheel affects the 
+     * speed of a vehicle. Values lower than -100 will create an invalid wheel.
+     * 
+     * @param orderedValidPositions
+     * A set of lists of vehicle types, where each list corresponds to a position. For
+     * instance, if two lists are passed, the first will be the vehicles for which
+     * this wheel is valid as a FRONT wheel, and the second list will be the vehicles
+     * for which this wheel is valid as a REAR wheel. The index is converted to a position
+     * based on PartPosition.fromInt(index).
+     */
     public Wheel(String name, double timeModifierPercentage, double speedModifierPercentage, List<VehicleType>... orderedValidPositions) {
         this.name = name;
         this.timeModifierValue = PartUtils.convertFromPercentageToModifier(timeModifierPercentage);
@@ -52,10 +78,13 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
         return this.positionValidator;
     }
     
-    
+    /**
+     * Gets whether or not this wheel is in a valid state as a modifier. Modifiers are
+     * multiplicative, so they must be greater than or equal to zero.
+     */
     @Override
     public boolean hasAllValidModifiers() {
-        return this.timeModifierValue > 0 && this.speedModifierValue > 0;
+        return this.timeModifierValue >= 0 && this.speedModifierValue >= 0;
     }
     
     @Override

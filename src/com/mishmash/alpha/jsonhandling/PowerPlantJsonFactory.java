@@ -15,6 +15,17 @@ public class PowerPlantJsonFactory {
     private static final List<String> requiredPartNames = Lists.newArrayList(IVehiclePart.NAME_KEY,
             IVehiclePart.VALID_ON_KEY, PowerPlant.SPEED_IN_MPH_KEY);
 
+    /**
+     * Reads in a jsonArray of power plants and returns a List of PowerPlant objects.
+     * If any of the items in the jsonArray lacks the required attributes, then no
+     * PowerPlant is made for that particular item. Excess attributes are ignored.
+     * 
+     * @param jsonArray
+     * An input array that may or may not contain some power plant items. 
+     * 
+     * @return
+     * A list of all the PowerPlant objects that could be made with the input data.
+     */
     public static List<PowerPlant> getPowerPlants(JsonArray jsonArray) {
         List<PowerPlant> powerPlants = new ArrayList<PowerPlant>();
         PowerPlant temp = null;
@@ -27,6 +38,16 @@ public class PowerPlantJsonFactory {
         return powerPlants;
     }
     
+    /**
+     * Creates a single PowerPlant object out of a JsonElement.
+     * 
+     * @param element
+     * The JsonElement that (in theory) contains the data for the
+     * PowerPlant definition.
+     *  
+     * @return
+     * A PowerPlant, or null if no object could be made from the given
+     */
     public static PowerPlant getSinglePowerPlant(JsonElement element) {
         PowerPlant plant = null;
         JsonObject plantObject = FactoryUtils.getVerifiedJsonObject(element, requiredPartNames);
