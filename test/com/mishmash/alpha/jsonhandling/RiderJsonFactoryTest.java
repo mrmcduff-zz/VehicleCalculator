@@ -20,7 +20,6 @@ public class RiderJsonFactoryTest {
 
     private static String rawData = "";
     private static JsonArray riderJsonArray = null;
-    private static final String RIDERS_KEY = "Riders";
     
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {

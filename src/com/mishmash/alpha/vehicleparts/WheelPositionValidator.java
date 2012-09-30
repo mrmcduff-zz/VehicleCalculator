@@ -26,11 +26,13 @@ public class WheelPositionValidator implements IVehicleTypeValidator {
      * The list of types valid at the given position.
      */
     public void setValidTypesForPosition(PartPosition position, List<VehicleType> validVehicles) {
-        Map<VehicleType, Boolean> positionMap = Maps.newHashMap();
-        for (VehicleType type : validVehicles) {
-            positionMap.put(type, true);
+        if (position != PartPosition.INVALID && position != null && validVehicles != null) {
+            Map<VehicleType, Boolean> positionMap = Maps.newHashMap();
+            for (VehicleType type : validVehicles) {
+                positionMap.put(type, true);
+            }
+            positionKeyedMapOfMaps.put(position, positionMap);
         }
-        positionKeyedMapOfMaps.put(position, positionMap);
     }
     
     @Override

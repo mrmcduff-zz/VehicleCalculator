@@ -5,10 +5,8 @@ import static org.junit.Assert.*;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JOptionPane;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,7 +16,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mishmash.alpha.PartPosition;
 import com.mishmash.alpha.VehicleType;
-import com.mishmash.alpha.vehicleparts.VehicleFrame;
+import com.mishmash.alpha.vehicleparts.IDistanceModifierPart;
+import com.mishmash.alpha.vehicleparts.IVehiclePart;
 import com.mishmash.alpha.vehicleparts.Wheel;
 
 public class WheelJsonFactoryTest {
@@ -57,30 +56,40 @@ public class WheelJsonFactoryTest {
 
     @Test
     public void testGetSingleWheel() {
-        fail("Not yet implemented");
-    }
-
-
-    @Test
-    public void testGetValidVehiclesForWheel() {
-        JsonObject jobj = new JsonObject();
-        jobj.addProperty("BicycleFront", true);
-        jobj.addProperty("BicycleRear", true);
-        jobj.addProperty("TricycleFront", true);
-        jobj.addProperty("TricycleRear", false);
-        List<VehicleType> frontWheels = WheelJsonFactory.getValidVehiclesForWheel(jobj, PartPosition.FRONT.toString());
-        Assert.assertArrayEquals(Lists.newArrayList(VehicleType.BICYCLE, VehicleType.TRICYCLE).toArray(),
-                frontWheels.toArray());
-        assertFalse(frontWheels.contains(VehicleType.SCOOTER));
-        assertFalse(frontWheels.contains(VehicleType.INVALID));
+        JsonObject simpleWheel = new JsonObject();
+        simpleWheel.addProperty(IVehiclePart.NAME_KEY, "Simple Wheel");
+        simpleWheel.addProperty(IDistanceModifierPart.SPEED_MODIFIER_KEY, 3);
+        simpleWheel.addProperty(IDistanceModifierPart.TIME_MODIFIER_KEY, 10);
+        JsonObject validationObject = new JsonObject();
+        validationObject.addProperty(VehicleType.BICYCLE.toString() + PartPosition.FRONT.toString(), 
+                true);
+        validationObject.addProperty(VehicleType.BICYCLE.toString() + 
+                PartPosition.REAR.toString(), true);
+        validationObject.addProperty(VehicleType.TRICYCLE.toString() + 
+                PartPosition.FRONT.toString(), true);
+        validationObject.addProperty(VehicleType.TRICYCLE.toString() +
+                PartPosition.REAR.toString(), false);
+        simpleWheel.add(IVehiclePart.VALID_ON_KEY, validationObject);
         
-        List<VehicleType> rearWheels = WheelJsonFactory.getValidVehiclesForWheel(jobj, PartPosition.REAR.toString());
-        VehicleType[] expected = new VehicleType[] { VehicleType.BICYCLE };
-        Assert.assertArrayEquals(expected, rearWheels.toArray());
-//        int answer = JOptionPane.showConfirmDialog(null, jobj.toString(), 
-//                "Does this look okay?", JOptionPane.YES_NO_OPTION);
-//        assertEquals(0, answer);
-
+        Wheel wheel = WheelJsonFactory.getSingleWheel(simpleWheel);
+        assertNotNull(wheel);
+        assertTrue(wheel.getValidator().isValidForType(VehicleType.BICYCLE));
+        assertTrue(wheel.getValidator().isValidForTypeWithParameters(VehicleType.TRICYCLE, 
+                PartPosition.FRONT.toString()));
+        assertTrue(wheel.getValidator().isValidForTypeWithParameters(VehicleType.BICYCLE, 
+                PartPosition.REAR.toString()));
+        assertFalse(wheel.getValidator().isValidForTypeWithParameters(VehicleType.INVALID,
+                PartPosition.FRONT.toString()));
+        assertFalse(wheel.getValidator().isValidForType(VehicleType.TRICYCLE));
+        assertFalse(wheel.getValidator().isValidForTypeWithParameters(VehicleType.BICYCLE, 
+                "Not a position"));
+        assertFalse(wheel.getValidator().isValidForTypeWithParameters(VehicleType.BICYCLE, 
+                PartPosition.INVALID.toString()));
+        
+        
     }
+
+
+
 
 }
