@@ -35,4 +35,8 @@ public enum VehicleType {
         return typeFromString;
     }
     
+    public static VehicleType[] validValues() {
+        return new VehicleType[] {BICYCLE, TRICYCLE, SCOOTER};
+    }
+    
 }

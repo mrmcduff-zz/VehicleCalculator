@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -21,7 +22,7 @@ public class WheelJsonFactory {
             IDistanceModifierPart.TIME_MODIFIER_KEY);
     
     public static List<Wheel> getWheels(JsonArray jsonArray) {
-        List<Wheel> wheelList = new ArrayList<Wheel>();
+        List<Wheel> wheelList = Lists.newArrayList();
         Wheel temp = null;
         for (JsonElement jsonElement : jsonArray) {
             temp = WheelJsonFactory.getSingleWheel(jsonElement);
@@ -30,6 +31,15 @@ public class WheelJsonFactory {
             }
         }
         return wheelList;
+    }
+    
+    public static Map<String, Wheel> getWheelsMappedByName(JsonArray jsonArray) {
+        List<Wheel> list = WheelJsonFactory.getWheels(jsonArray);
+        Map<String, Wheel> map = Maps.newHashMap();
+        for (Wheel wheel : list) {
+            map.put(wheel.getName(), wheel);
+        }
+        return map;
     }
     
     @SuppressWarnings("unchecked")

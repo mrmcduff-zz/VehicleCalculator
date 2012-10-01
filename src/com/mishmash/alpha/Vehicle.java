@@ -28,9 +28,26 @@ public class Vehicle {
     private List<IVehiclePart> parts = Lists.newArrayList();
     private List<IDistanceModifierPart> distanceModifiers = Lists.newArrayList();
     private List<Wheel> wheels = new ArrayList<Wheel>();
-    private final int REQUIRED_WHEEL_COUNT = 2;
     private final double MINUTES_TO_HOURS_CONVERTER = 1/60.0;
     
+    /**
+     * Creates a new vehicle based on the input data.
+     * 
+     * @param type
+     * The type of vehicle.
+     * 
+     * @param rider
+     * The vehicle's rider.
+     * 
+     * @param vehicleFrame
+     * The vehicle's frame.
+     * 
+     * @param powerPlant
+     * The vehicle's power plant.
+     * 
+     * @param wheels
+     * An list of the vehicle's wheels, ordered front-to-back. 
+     */
     public Vehicle(VehicleType type, Rider rider, VehicleFrame vehicleFrame, 
             PowerPlant powerPlant, List<Wheel> wheels) {
         this.type = type;

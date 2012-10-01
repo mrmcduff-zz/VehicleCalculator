@@ -2,12 +2,10 @@ package com.mishmash.alpha;
 
 import static org.junit.Assert.*;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+
+import com.mishmash.alpha.jsonhandling.ItemGatherer;
 
 public class ItemGathererTest {
 

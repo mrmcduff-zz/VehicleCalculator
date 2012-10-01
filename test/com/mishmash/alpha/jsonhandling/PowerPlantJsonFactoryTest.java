@@ -49,6 +49,15 @@ public class PowerPlantJsonFactoryTest {
         JsonObject jsonPlant = new JsonObject();
         jsonPlant.addProperty(IVehiclePart.NAME_KEY, "Test Plant");
         jsonPlant.addProperty(PowerPlant.SPEED_IN_MPH_KEY, 20);
+        
+        JsonObject validationObject = new JsonObject();
+        validationObject.addProperty(VehicleType.BICYCLE.toString(), true);
+        
+        jsonPlant.add(IVehiclePart.VALID_ON_KEY, validationObject);
+        
+        PowerPlant expected = new PowerPlant("Test Plant", 20, 
+                Lists.newArrayList(VehicleType.BICYCLE));
+        assertEquals(expected, PowerPlantJsonFactory.getSinglePowerPlant(jsonPlant));
 
     }
 

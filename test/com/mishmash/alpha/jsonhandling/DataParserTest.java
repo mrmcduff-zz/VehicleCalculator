@@ -15,7 +15,6 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mishmash.alpha.ItemGatherer;
 
 
 import org.apache.commons.io.IOUtils;

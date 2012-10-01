@@ -1,9 +1,11 @@
 package com.mishmash.alpha.jsonhandling;
 
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -18,7 +20,7 @@ public class FrameJsonFactory {
             IDistanceModifierPart.TIME_MODIFIER_KEY);
     
     public static List<VehicleFrame> getVehicleFrames(JsonArray jsonArray) {
-        List<VehicleFrame> frames = new ArrayList<VehicleFrame>();
+        List<VehicleFrame> frames = Lists.newArrayList();
         VehicleFrame temp = null;
         for (JsonElement element : jsonArray) {
             temp = getSingleVehicleFrame(element);
@@ -27,6 +29,15 @@ public class FrameJsonFactory {
             }
         }
         return frames;
+    }
+    
+    public static Map<String, VehicleFrame> getVehicleFramesMappedByName(JsonArray jsonArray) {
+        List<VehicleFrame> list = FrameJsonFactory.getVehicleFrames(jsonArray);
+        Map<String, VehicleFrame> map = Maps.newHashMap();
+        for (VehicleFrame frame : list) {
+            map.put(frame.getName(), frame);
+        }
+        return map;
     }
     
     public static VehicleFrame getSingleVehicleFrame(JsonElement element) {

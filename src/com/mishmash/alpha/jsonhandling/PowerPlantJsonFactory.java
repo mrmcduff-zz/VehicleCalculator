@@ -1,9 +1,10 @@
 package com.mishmash.alpha.jsonhandling;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -27,7 +28,7 @@ public class PowerPlantJsonFactory {
      * A list of all the PowerPlant objects that could be made with the input data.
      */
     public static List<PowerPlant> getPowerPlants(JsonArray jsonArray) {
-        List<PowerPlant> powerPlants = new ArrayList<PowerPlant>();
+        List<PowerPlant> powerPlants = Lists.newArrayList();
         PowerPlant temp = null;
         for (JsonElement element : jsonArray) {
             temp = getSinglePowerPlant(element);
@@ -36,6 +37,24 @@ public class PowerPlantJsonFactory {
             }
         }
         return powerPlants;
+    }
+    
+    /**
+     * Convenience method to get the list of power plants parameterized by name.
+     * 
+     * @param jsonArray
+     * A JsonArray that contains our power plant data.
+     * 
+     * @return
+     * A map of power plants, keyed by their names.
+     */
+    public static Map<String, PowerPlant> getPowerPlantsMappedByName(JsonArray jsonArray) {
+        List<PowerPlant> list = PowerPlantJsonFactory.getPowerPlants(jsonArray);
+        Map<String, PowerPlant> map = Maps.newHashMap();
+        for (PowerPlant powerPlant : list) {
+            map.put(powerPlant.getName(), powerPlant);
+        }
+        return map;
     }
     
     /**
