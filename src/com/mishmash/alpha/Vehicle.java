@@ -9,6 +9,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 import com.mishmash.alpha.vehicleparts.IDistanceModifierPart;
 import com.mishmash.alpha.vehicleparts.IVehiclePart;
+import com.mishmash.alpha.vehicleparts.PartUtils;
 import com.mishmash.alpha.vehicleparts.PowerPlant;
 import com.mishmash.alpha.vehicleparts.Rider;
 import com.mishmash.alpha.vehicleparts.VehicleFrame;
@@ -86,19 +87,32 @@ public class Vehicle {
         return answer;
     }
     
-    public double getDistance() {
+    public double getDistance(ModifierOperation op) {
+        
         double distance = 0.0;
         if (this.isValid()) {
             double time = rider.getRideTimeInMinutes() * MINUTES_TO_HOURS_CONVERTER;
             double speed = powerPlant.getSpeedInMph();
             double speedModifier = 1.0;
             double timeModifier = 1.0;
-            for (IDistanceModifierPart idmp : this.distanceModifiers) {
-                // Stacking modifiers multiplicatively
-                speedModifier *= idmp.getSpeedModifierFactor();
-                timeModifier *= idmp.getTimeModifierFactor();
+            if (op == ModifierOperation.MULTIPLY) {
+                for (IDistanceModifierPart idmp : this.distanceModifiers) {
+                    // Stacking modifiers multiplicatively
+                    speedModifier *= idmp.getSpeedModifierFactor();
+                    timeModifier *= idmp.getTimeModifierFactor();
+                }
+                
+            } else {
+                for (IDistanceModifierPart idmp : this.distanceModifiers) {
+                    // Stacking modifiers additively
+                    speedModifier += PartUtils.convertFromMultiplicativeModifierToAdditive(
+                            idmp.getSpeedModifierFactor());
+                    
+                    timeModifier += PartUtils.convertFromMultiplicativeModifierToAdditive(
+                            idmp.getTimeModifierFactor());
+                }
             }
-            
+               
             time *= timeModifier;
             speed *= speedModifier;
             distance = speed * time;

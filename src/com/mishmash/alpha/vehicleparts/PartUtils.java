@@ -7,6 +7,10 @@ public class PartUtils {
         return 1.0 + (percentage / PERCENTAGE_CONVERTER);
     }
     
+    public static double convertFromMultiplicativeModifierToAdditive(double modifier) {
+        return 1.0 - modifier;
+    }
+    
     public static boolean doubleEquals(double first, double second) {
         return Math.abs(first - second) < IVehiclePart.DELTA;
     }
