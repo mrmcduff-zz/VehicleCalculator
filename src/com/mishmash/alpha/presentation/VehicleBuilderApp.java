@@ -22,6 +22,7 @@ import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import com.mishmash.alpha.VehicleType;
 import com.mishmash.alpha.presentation.VehicleGuiPart;
+import java.awt.Toolkit;
 
 public class VehicleBuilderApp {
 
@@ -84,6 +85,7 @@ public class VehicleBuilderApp {
      */
     private void initialize() {
         frmVehicleCalculator = new JFrame();
+        frmVehicleCalculator.setIconImage(Toolkit.getDefaultToolkit().getImage(VehicleBuilderApp.class.getResource("/com/mishmash/alpha/resources/MLogo.png")));
         frmVehicleCalculator.setTitle("Vehicle Calculator");
         frmVehicleCalculator.setBounds(100, 100, 450, 300);
         frmVehicleCalculator.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -172,6 +174,9 @@ public class VehicleBuilderApp {
         cb.setModel(boxModel);
         if (selection != null && newContents.contains(selection)) {
             cb.setSelectedItem(selection);
+        } else {
+            cb.setSelectedIndex(-1);
+            outputLabel.setText("");
         }
     }
     
