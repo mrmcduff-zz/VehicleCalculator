@@ -8,7 +8,7 @@ public class PartUtils {
     }
     
     public static double convertFromMultiplicativeModifierToAdditive(double modifier) {
-        return 1.0 - modifier;
+        return (modifier >= 0) ? modifier - 1.0 : 1.0 - modifier;
     }
     
     public static boolean doubleEquals(double first, double second) {
