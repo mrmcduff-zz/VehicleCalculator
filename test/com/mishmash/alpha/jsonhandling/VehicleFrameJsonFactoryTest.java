@@ -32,7 +32,7 @@ public class VehicleFrameJsonFactoryTest {
 
     @Test
     public void testGetVehicleFrames() {
-        assertEquals(3, frameJsonArray.size());
+        assertEquals(4, frameJsonArray.size());
         
         List<VehicleFrame> frames = FrameJsonFactory.getVehicleFrames(frameJsonArray);
         assertEquals(frameJsonArray.size(), frames.size());

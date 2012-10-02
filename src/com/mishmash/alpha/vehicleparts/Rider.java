@@ -34,6 +34,11 @@ public class Rider implements IVehiclePart {
     }
     
     @Override
+    public boolean hasValidAttributes() {
+        return (!name.equals("") && rideTimeInMinutes >= 0);
+    }
+    
+    @Override
     public final boolean equals(Object other) {
         if ( other != null && other instanceof Rider ) {
             Rider otherRider = (Rider) other;

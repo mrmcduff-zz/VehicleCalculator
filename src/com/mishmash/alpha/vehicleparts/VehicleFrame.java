@@ -43,9 +43,10 @@ public class VehicleFrame implements IVehiclePart, IDistanceModifierPart {
     }
 
     @Override
-    public boolean hasAllValidModifiers() {
-        return this.timeModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE && 
-                this.speedModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE;
+    public boolean hasValidAttributes() {
+        return this.timeModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE &&
+                this.speedModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE && 
+                !this.name.equals("");
     }
     
     /**

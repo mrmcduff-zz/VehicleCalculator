@@ -59,9 +59,9 @@ public class WheelTest {
 
     @Test
     public void testHasAllValidModifiers() {
-        assertTrue(w1.hasAllValidModifiers());
-        assertTrue(w3.hasAllValidModifiers());
-        assertFalse(w4.hasAllValidModifiers());
+        assertTrue(w1.hasValidAttributes());
+        assertTrue(w3.hasValidAttributes());
+        assertFalse(w4.hasValidAttributes());
     }
 
 }

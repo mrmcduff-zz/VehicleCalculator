@@ -11,5 +11,5 @@ public interface IDistanceModifierPart {
     
     public double getSpeedModifierFactor();
     public double getTimeModifierFactor();
-    public boolean hasAllValidModifiers();
+
 }

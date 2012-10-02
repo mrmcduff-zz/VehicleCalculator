@@ -48,6 +48,11 @@ public class PowerPlant implements IVehiclePart{
     }
     
     @Override
+    public boolean hasValidAttributes() {
+        return (!name.equals("") && speedInMph >= 0);
+    }
+    
+    @Override
     public final boolean equals(Object other) {
         boolean answer = true;
         if (other instanceof PowerPlant) {

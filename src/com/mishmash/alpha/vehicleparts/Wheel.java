@@ -78,14 +78,12 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
         return this.positionValidator;
     }
     
-    /**
-     * Gets whether or not this wheel is in a valid state as a modifier. Modifiers are
-     * multiplicative, so they must be greater than or equal to zero.
-     */
+    
     @Override
-    public boolean hasAllValidModifiers() {
+    public boolean hasValidAttributes() {
         return this.timeModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE &&
-                this.speedModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE;
+                this.speedModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE && 
+                !this.name.equals("");
     }
     
     @Override

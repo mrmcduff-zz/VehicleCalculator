@@ -83,12 +83,13 @@ public class Vehicle {
             answer = hasBeenValidated;
         } else {
             answer = (rider != null);
-            if (answer) {
-                answer = answer && hasValidPartsForType();
+            
+            for (IVehiclePart part : parts) {
+                answer = answer && part.hasValidAttributes();
             }
             
             if (answer) {
-                answer = answer && modifierPropertiesValid();
+                answer = answer && hasValidPartsForType();
             }
             
             // mark the flag
@@ -200,16 +201,6 @@ public class Vehicle {
         }
     }
     
-    private boolean modifierPropertiesValid() {
-        boolean answer = true;
-        for(IDistanceModifierPart idmp : distanceModifiers) {
-            if (!answer) {
-                break;
-            }
-            answer = answer && idmp != null && idmp.hasAllValidModifiers();
-        }
-        return answer;
-    }
     
    
     

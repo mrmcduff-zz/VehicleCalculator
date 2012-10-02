@@ -37,7 +37,7 @@ public class WheelJsonFactoryTest {
 
     @Test
     public void testGetWheels() {
-        assertEquals(5, jsonArray.size());
+        assertEquals(6, jsonArray.size());
         List<Wheel> wheels = WheelJsonFactory.getWheels(jsonArray);
         assertEquals(jsonArray.size(), wheels.size());
         

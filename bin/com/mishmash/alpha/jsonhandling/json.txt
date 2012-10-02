@@ -27,6 +27,19 @@
 			}
 		},
 		{
+		    "Name" : "Square Wheel",
+		    "TimeModifierPercentage": -50,
+		    "SpeedModifierPercentage": -90,
+		    "ValidOn" : {
+		        "BicycleFront" : true,
+		        "BicycleRear" : true,
+		        "TricycleFront" : true,
+		        "TricycleRear" : false,
+		        "ScooterFront" : false,
+		        "ScooterRear" : false
+		    }
+		},
+		{
 			"Name": "Light Wheel",
 			"TimeModifierPercentage": 10,
 			"SpeedModifierPercentage": 0,
@@ -90,6 +103,16 @@
 				"Tricycle" : true,
 				"Scooter" : true
 			}
+		},
+		{
+		    "Name": "Electrified Frame",
+		    "TimeModifierPercentage" : -100,
+		    "SpeedModifierPercentage": 25,
+		    "ValidOn": {
+		        "Bicycle" : true,
+		        "Tricycle" : true,
+		        "Scooter" : false
+		    }
 		},
 		{
 			"Name": "Light Frame",
