@@ -22,9 +22,10 @@ public class GuiController {
     private Map<VehicleGuiPart, String> partMap = Maps.newConcurrentMap();
     private VehicleType type = VehicleType.INVALID;
     private ModifierOperation operation = ModifierOperation.ADD;
+    private boolean dataStoresFilled = false;
     
     public GuiController() {
-        factory.setDataSource(DATA_SOURCE);
+        dataStoresFilled = factory.setDataSource(DATA_SOURCE);
     }
     
     /**
@@ -98,6 +99,14 @@ public class GuiController {
         if (op != null) {
             this.operation = op;
         }
+    }
+    
+    public boolean hasSuccessfullyGatheredData() {
+        return dataStoresFilled;
+    }
+    
+    public String getDataSource() {
+        return DATA_SOURCE;
     }
     
 }

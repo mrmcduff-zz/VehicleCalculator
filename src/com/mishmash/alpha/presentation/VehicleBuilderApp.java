@@ -25,6 +25,7 @@ import com.mishmash.alpha.ModifierOperation;
 import com.mishmash.alpha.VehicleType;
 import com.mishmash.alpha.presentation.VehicleGuiPart;
 import java.awt.Toolkit;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -33,6 +34,10 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JButton;
 
+/**
+ * This is the presentation layer and main class of the application.
+ *
+ */
 public class VehicleBuilderApp {
 
     private JFrame frmVehicleCalculator;
@@ -55,7 +60,10 @@ public class VehicleBuilderApp {
             public void run() {
                 try {
                     VehicleBuilderApp window = new VehicleBuilderApp();
-                    window.frmVehicleCalculator.setVisible(true);
+                    if (window.frmVehicleCalculator != null) {
+                        window.frmVehicleCalculator.setVisible(true);
+                    }
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -67,11 +75,22 @@ public class VehicleBuilderApp {
      * Create the application.
      */
     public VehicleBuilderApp() {
-        initialize();
-        collectAndAddListenersToComboBoxes();
-        updatePartComboBoxContents((VehicleType)this.typeComboBox.getSelectedItem());
-        checkDataAndUpdateValues();
         
+        if (controller.hasSuccessfullyGatheredData()) {
+            initialize();
+            collectAndAddListenersToComboBoxes();
+            updatePartComboBoxContents((VehicleType)this.typeComboBox.getSelectedItem());
+            checkDataAndUpdateValues();
+        } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Connection to data source (");
+            sb.append(controller.getDataSource());
+            sb.append(") failed.\nUnable to populate data fields.\n" +
+            		"Please close project, check your connection, and try opening Vehicle Calculator again.");
+            JOptionPane.showMessageDialog(null, sb.toString());
+            
+            
+        }
     }
     
     /**
@@ -218,9 +237,11 @@ public class VehicleBuilderApp {
      * Changes the operation used for stacking modifications
      */
     private void setOperation() {
-        Object selected = JOptionPane.showInputDialog(null, "Select stacking operation", 
+        Object selected = JOptionPane.showInputDialog(frmVehicleCalculator, 
+                "Select stacking operation", 
                 "Stacking Operation", 
-                JOptionPane.QUESTION_MESSAGE, null, 
+                JOptionPane.QUESTION_MESSAGE, 
+                null, 
                 ModifierOperation.valueStrings(), controller.getModiferStackingOperation().toString());
         if (selected != null && selected instanceof String) {
             controller.setModifierStackingOperation(ModifierOperation.fromString((String) selected));

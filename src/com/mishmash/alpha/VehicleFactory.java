@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonIOException;
 import com.mishmash.alpha.jsonhandling.FrameJsonFactory;
 import com.mishmash.alpha.jsonhandling.ItemGatherer;
 import com.mishmash.alpha.jsonhandling.PowerPlantJsonFactory;
@@ -41,8 +42,8 @@ public class VehicleFactory {
         return instance;
     }
     
-    public void setDataSource(String source) {
-        this.fillDataStoresFromSource(source);
+    public boolean setDataSource(String source) {
+        return fillDataStoresFromSource(source);
     }
     
     public List<String> getRequiredVehiclePartNames() {
@@ -53,20 +54,25 @@ public class VehicleFactory {
     
     private boolean fillDataStoresFromSource(String source) {
         boolean successfulDataPull = true;
-        String rawData = ItemGatherer.getSmallAmountOfTextDataFromSource(source);
-        Map<String, JsonArray> categoryMap = ItemGatherer.seperateCategories(rawData,
-                this.getRequiredVehiclePartNames());
-        if (categoryMap.containsKey(Wheel.PROPERTY_NAME) &&
-                categoryMap.containsKey(VehicleFrame.PROPERTY_NAME) &&
-                categoryMap.containsKey(Rider.PROPERTY_NAME) &&
-                categoryMap.containsKey(PowerPlant.PROPERTY_NAME)){
-            
-            wheels = WheelJsonFactory.getWheelsMappedByName(categoryMap.get(Wheel.PROPERTY_NAME));
-            frames = FrameJsonFactory.getVehicleFramesMappedByName(categoryMap.get(VehicleFrame.PROPERTY_NAME));
-            riders = RiderJsonFactory.getRidersMappedByName(categoryMap.get(Rider.PROPERTY_NAME));
-            powerPlants = PowerPlantJsonFactory.getPowerPlantsMappedByName(categoryMap.get(PowerPlant.PROPERTY_NAME));
-            
-        } else {
+        try {
+            String rawData = ItemGatherer.getSmallAmountOfTextDataFromSource(source);
+            Map<String, JsonArray> categoryMap = ItemGatherer.seperateCategories(rawData,
+                    this.getRequiredVehiclePartNames());
+            if (categoryMap.containsKey(Wheel.PROPERTY_NAME) &&
+                    categoryMap.containsKey(VehicleFrame.PROPERTY_NAME) &&
+                    categoryMap.containsKey(Rider.PROPERTY_NAME) &&
+                    categoryMap.containsKey(PowerPlant.PROPERTY_NAME)){
+                
+                wheels = WheelJsonFactory.getWheelsMappedByName(categoryMap.get(Wheel.PROPERTY_NAME));
+                frames = FrameJsonFactory.getVehicleFramesMappedByName(categoryMap.get(VehicleFrame.PROPERTY_NAME));
+                riders = RiderJsonFactory.getRidersMappedByName(categoryMap.get(Rider.PROPERTY_NAME));
+                powerPlants = PowerPlantJsonFactory.getPowerPlantsMappedByName(categoryMap.get(PowerPlant.PROPERTY_NAME));
+                
+            } else {
+                successfulDataPull = false;
+            }
+        } catch (JsonIOException jioe) {
+            jioe.printStackTrace();
             successfulDataPull = false;
         }
         
