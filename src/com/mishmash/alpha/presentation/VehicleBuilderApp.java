@@ -21,7 +21,7 @@ import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
 
-import com.mishmash.alpha.ModifierOperation;
+import com.mishmash.alpha.ModifierStackingOperation;
 import com.mishmash.alpha.VehicleType;
 import com.mishmash.alpha.presentation.VehicleGuiPart;
 import java.awt.Toolkit;
@@ -242,9 +242,9 @@ public class VehicleBuilderApp {
                 "Stacking Operation", 
                 JOptionPane.QUESTION_MESSAGE, 
                 null, 
-                ModifierOperation.valueStrings(), controller.getModiferStackingOperation().toString());
+                ModifierStackingOperation.valueStrings(), controller.getModiferStackingOperation().toString());
         if (selected != null && selected instanceof String) {
-            controller.setModifierStackingOperation(ModifierOperation.fromString((String) selected));
+            controller.setModifierStackingOperation(ModifierStackingOperation.fromString((String) selected));
         }
         
     }

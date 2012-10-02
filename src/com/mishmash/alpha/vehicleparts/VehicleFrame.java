@@ -14,8 +14,8 @@ public class VehicleFrame implements IVehiclePart, IDistanceModifierPart {
     public VehicleFrame(String name, double timeModifierPercentage, double speedModifierPercentage,
             List<VehicleType> validTypes) {
         this.name = name;
-        this.timeModifierValue = PartUtils.convertFromPercentageToModifier(timeModifierPercentage);
-        this.speedModifierValue = PartUtils.convertFromPercentageToModifier(speedModifierPercentage);
+        this.timeModifierValue = timeModifierPercentage;
+        this.speedModifierValue = speedModifierPercentage;
         this.validator.setValidTypes(validTypes);
     }
     
@@ -44,7 +44,8 @@ public class VehicleFrame implements IVehiclePart, IDistanceModifierPart {
 
     @Override
     public boolean hasAllValidModifiers() {
-        return this.timeModifierValue > 0 && this.speedModifierValue > 0;
+        return this.timeModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE && 
+                this.speedModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE;
     }
     
     /**

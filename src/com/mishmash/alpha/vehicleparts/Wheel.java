@@ -42,8 +42,8 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
      */
     public Wheel(String name, double timeModifierPercentage, double speedModifierPercentage, List<VehicleType>... orderedValidPositions) {
         this.name = name;
-        this.timeModifierValue = PartUtils.convertFromPercentageToModifier(timeModifierPercentage);
-        this.speedModifierValue = PartUtils.convertFromPercentageToModifier(speedModifierPercentage);
+        this.timeModifierValue = timeModifierPercentage;
+        this.speedModifierValue = speedModifierPercentage;
         
         for (int i = 0; i < orderedValidPositions.length; ++i) {
             PartPosition temp = PartPosition.fromInt(i);
@@ -84,7 +84,8 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
      */
     @Override
     public boolean hasAllValidModifiers() {
-        return this.timeModifierValue >= 0 && this.speedModifierValue >= 0;
+        return this.timeModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE &&
+                this.speedModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE;
     }
     
     @Override

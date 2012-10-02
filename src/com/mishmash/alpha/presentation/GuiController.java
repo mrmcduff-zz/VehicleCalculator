@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.mishmash.alpha.ModifierOperation;
+import com.mishmash.alpha.ModifierStackingOperation;
 import com.mishmash.alpha.Vehicle;
 import com.mishmash.alpha.VehicleFactory;
 import com.mishmash.alpha.VehicleType;
@@ -21,7 +21,7 @@ public class GuiController {
     private static final String DATA_SOURCE = "http://www.atlanticbt.com/mobiletest/json.txt";
     private Map<VehicleGuiPart, String> partMap = Maps.newConcurrentMap();
     private VehicleType type = VehicleType.INVALID;
-    private ModifierOperation operation = ModifierOperation.ADD;
+    private ModifierStackingOperation operation = ModifierStackingOperation.ADD;
     private boolean dataStoresFilled = false;
     
     public GuiController() {
@@ -91,11 +91,11 @@ public class GuiController {
         return partNames;
     }
     
-    public ModifierOperation getModiferStackingOperation() {
+    public ModifierStackingOperation getModiferStackingOperation() {
         return this.operation;
     }
     
-    public void setModifierStackingOperation(ModifierOperation op) {
+    public void setModifierStackingOperation(ModifierStackingOperation op) {
         if (op != null) {
             this.operation = op;
         }

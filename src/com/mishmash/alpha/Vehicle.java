@@ -16,7 +16,11 @@ import com.mishmash.alpha.vehicleparts.VehicleFrame;
 import com.mishmash.alpha.vehicleparts.Wheel;
 
 /**
- * @author mrmcduff
+ * Reperesents the star of this application, the Vehicle. Vehicles have limited functionality
+ * other than to check their own validity (in case they've been given invalid parts) and to
+ * calculate the distance that they could travel. Vehicles deliberately don't have
+ * setter methods for the parts. If you want to change the parts of a vehicle, create a new
+ * vehicle.
  *
  */
 public class Vehicle {
@@ -65,6 +69,14 @@ public class Vehicle {
         sortModifierProperties();
     }
     
+    /**
+     * A lazy validator. Because the Vehicle can't be altered 
+     * after construction, we only need to check this once.
+     * 
+     * @return
+     * True if all parts are valid for the type of the vehicle and 
+     * all modifiers have valid values.
+     */
     public boolean isValid() {
         boolean answer = true;
         if (hasBeenValidated) {
@@ -79,7 +91,6 @@ public class Vehicle {
                 answer = answer && modifierPropertiesValid();
             }
             
-            
             // mark the flag
             hasBeenValidated = true;
         }
@@ -87,34 +98,66 @@ public class Vehicle {
         return answer;
     }
     
-    public double getDistance(ModifierOperation op) {
+    /**
+     * Calculates the distance a vehicle can travel, using whichever 
+     * stacking operation it is fed.
+     * 
+     * @param op
+     * How to stack the modifiers (additively or multiplicatively)
+     * 
+     * @return
+     * The distance traveled.
+     */
+    public double getDistance(ModifierStackingOperation op) {
         
         double distance = 0.0;
         if (this.isValid()) {
             double time = rider.getRideTimeInMinutes() * MINUTES_TO_HOURS_CONVERTER;
             double speed = powerPlant.getSpeedInMph();
+            
+            /*
+             * Initialized modifiers multiply the speed and time by 1.0
+             */
             double speedModifier = 1.0;
             double timeModifier = 1.0;
-            if (op == ModifierOperation.MULTIPLY) {
+
+            if (op == ModifierStackingOperation.MULTIPLY) {
                 for (IDistanceModifierPart idmp : this.distanceModifiers) {
                     // Stacking modifiers multiplicatively
-                    speedModifier *= idmp.getSpeedModifierFactor();
-                    timeModifier *= idmp.getTimeModifierFactor();
+                    speedModifier *= PartUtils.convertFromPercentageToMultiplicativeModifier(
+                            idmp.getSpeedModifierFactor());
+                    timeModifier *= PartUtils.convertFromPercentageToMultiplicativeModifier(
+                            idmp.getTimeModifierFactor());
                 }
                 
             } else {
                 for (IDistanceModifierPart idmp : this.distanceModifiers) {
-                    // Stacking modifiers additively
-                    speedModifier += PartUtils.convertFromMultiplicativeModifierToAdditive(
+                    speedModifier += PartUtils.convertFromPercentageToAdditiveModifier(
                             idmp.getSpeedModifierFactor());
                     
-                    timeModifier += PartUtils.convertFromMultiplicativeModifierToAdditive(
+                    timeModifier += PartUtils.convertFromPercentageToAdditiveModifier(
                             idmp.getTimeModifierFactor());
                 }
             }
-               
-            time *= timeModifier;
-            speed *= speedModifier;
+            
+            /*
+             * It is impossible to ride the vehicle for negative time
+             * or at negative speed (speed is not a vector-based quantity),
+             * so if our modifier stacking operation allows the total
+             * modifier to go negative, we simply set the modified value to zero.
+             */
+            if (timeModifier >= 0) {   
+                time *= timeModifier;
+            } else {
+                time = 0;
+            }
+            
+            if (speedModifier >= 0) {
+                speed*= speedModifier;
+            } else {
+                speed = 0;
+            }
+
             distance = speed * time;
             
         } 
@@ -151,9 +194,9 @@ public class Vehicle {
     }
     
     private void sortModifierProperties() {
-        this.distanceModifiers.add(this.frame);
+        distanceModifiers.add(this.frame);
         for (Wheel wheel : wheels) {
-            this.distanceModifiers.add(wheel);
+            distanceModifiers.add(wheel);
         }
     }
     
