@@ -59,7 +59,7 @@ public class RiderJsonFactoryTest {
         Rider tomRider = RiderJsonFactory.getSingleRider(element);
         assertNotNull(tomRider);
         assertEquals("Tom", tomRider.getName());
-        assertEquals(5, tomRider.getRideTimeInMinutes(), TestUtils.EQUALS_DELTA);
+        assertEquals(5, tomRider.getRideTimeInMinutes(), IVehiclePart.DELTA);
     }
     
     @Test
@@ -97,7 +97,7 @@ public class RiderJsonFactoryTest {
         Rider overAchiever = RiderJsonFactory.getSingleRider(overAchievingObject);
         assertNotNull(overAchiever);
         assertEquals("Superman", overAchiever.getName());
-        assertEquals(insaneTime, overAchiever.getRideTimeInMinutes(), TestUtils.EQUALS_DELTA);
+        assertEquals(insaneTime, overAchiever.getRideTimeInMinutes(), IVehiclePart.DELTA);
     }
     
     @Test

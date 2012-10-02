@@ -30,6 +30,7 @@ public class Vehicle {
     private PowerPlant powerPlant;
     private VehicleType type;
     private boolean hasBeenValidated = false;
+    private boolean cachedValidation = false;
     private List<IVehiclePart> parts = Lists.newArrayList();
     private List<IDistanceModifierPart> distanceModifiers = Lists.newArrayList();
     private List<Wheel> wheels = new ArrayList<Wheel>();
@@ -80,7 +81,7 @@ public class Vehicle {
     public boolean isValid() {
         boolean answer = true;
         if (hasBeenValidated) {
-            answer = hasBeenValidated;
+            answer = cachedValidation;
         } else {
             answer = (rider != null);
             
@@ -94,6 +95,7 @@ public class Vehicle {
             
             // mark the flag
             hasBeenValidated = true;
+            cachedValidation = answer;
         }
         
         return answer;

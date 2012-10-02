@@ -11,7 +11,6 @@ public class PartUtils {
         return percentage/PERCENTAGE_CONVERTER;
     }
     
-    
     public static boolean doubleEquals(double first, double second) {
         return Math.abs(first - second) < IVehiclePart.DELTA;
     }
