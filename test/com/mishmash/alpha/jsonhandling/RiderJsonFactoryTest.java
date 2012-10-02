@@ -25,7 +25,7 @@ public class RiderJsonFactoryTest {
     public static void setUpBeforeClass() throws Exception {
         rawData = IOUtils.toString(RiderJsonFactoryTest.class.getResourceAsStream(TestUtils.LOCAL_SOURCE), "UTF-8");
         List<String> categoryList = Lists.newArrayList(Rider.PROPERTY_NAME);
-        Map<String, JsonArray> categories = DataParser.seperateCategories(rawData, categoryList);
+        Map<String, JsonArray> categories = ItemGatherer.seperateCategories(rawData, categoryList);
         riderJsonArray = categories.get(Rider.PROPERTY_NAME);
     }
 

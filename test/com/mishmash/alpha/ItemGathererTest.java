@@ -2,46 +2,36 @@ package com.mishmash.alpha;
 
 import static org.junit.Assert.*;
 
-import javax.swing.JOptionPane;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.io.IOUtils;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
+import com.google.gson.JsonArray;
 import com.mishmash.alpha.jsonhandling.ItemGatherer;
 
 public class ItemGathererTest {
 
-    private static final String DATA_SOURCE = "http://www.atlanticbt.com/mobiletest/json.txt";
-
+    private static String rawData = "";
+    private static final String LOCAL_SOURCE = "json.txt";
+    
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+        rawData = IOUtils.toString(ItemGatherer.class.getResourceAsStream(LOCAL_SOURCE), "UTF-8");
+    }
+    
     @Test
-    public void testGetSmallAmountOfTextDataFromSource() {
-        String testString = ItemGatherer.getSmallAmountOfTextDataFromSource(DATA_SOURCE);
-        String [] lines = testString.split("\n");
-        StringBuilder sb = new StringBuilder();
-        String firstMessage = "";
-        for (int i = 0; i < 10; ++i) {
-            if (i < lines.length) {
-                sb.append(lines[i]);
-                sb.append("\n");
-            } else {
-                break;
-            }
-        }
-        firstMessage = sb.toString();
-        int answer = JOptionPane.showConfirmDialog(null, firstMessage, 
-                "Does this look okay?", JOptionPane.YES_NO_OPTION);
-        assertEquals(0, answer);
-        
-        if (lines.length > 20) {
-            sb = new StringBuilder();
-            String secondMessage = "";
-            for (int i = lines.length - 10; i < lines.length; ++i) {
-                sb.append(lines[i]);
-                sb.append("\n");
-            }
-            secondMessage = sb.toString();
-            int secondAnswer = JOptionPane.showConfirmDialog(null, secondMessage, 
-                    "How about this?", JOptionPane.YES_NO_OPTION);
-            assertEquals(0, secondAnswer);
-        }
+    public void testSeperateCategories() {
+        assertTrue(rawData.length() > 0);
+        String ridersKey = "Riders";
+        String wheelsKey = "Wheels";
+        String framesKey = "Frames";
+        String powerPlantKey = "Powerplant";
+        List<String> categoryList = Lists.newArrayList(ridersKey, wheelsKey, framesKey, powerPlantKey);
+        Map<String, JsonArray> categories = ItemGatherer.seperateCategories(rawData, categoryList);
+        assertEquals(4, categories.size());
     }
 
 }

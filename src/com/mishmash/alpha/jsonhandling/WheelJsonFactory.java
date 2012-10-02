@@ -1,6 +1,5 @@
 package com.mishmash.alpha.jsonhandling;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +14,24 @@ import com.mishmash.alpha.vehicleparts.IDistanceModifierPart;
 import com.mishmash.alpha.vehicleparts.IVehiclePart;
 import com.mishmash.alpha.vehicleparts.Wheel;
 
+/**
+ * Class to build wheels out of JSON
+ */
 public class WheelJsonFactory {
     
     private static final List<String> requiredPartNames = Lists.newArrayList(IVehiclePart.NAME_KEY,
             IVehiclePart.VALID_ON_KEY, IDistanceModifierPart.SPEED_MODIFIER_KEY,
             IDistanceModifierPart.TIME_MODIFIER_KEY);
     
+    /**
+     * Gets a list of wheels from an input JsonArray.
+     * 
+     * @param jsonArray
+     * The JsonArray to parse.
+     * 
+     * @return
+     * All wheels that can be created from the input data.
+     */
     public static List<Wheel> getWheels(JsonArray jsonArray) {
         List<Wheel> wheelList = Lists.newArrayList();
         Wheel temp = null;
@@ -33,6 +44,16 @@ public class WheelJsonFactory {
         return wheelList;
     }
     
+    /**
+     * Gets a mapped set of wheels from the input data, where the map key
+     * is the name of the wheel.
+     * 
+     * @param jsonArray
+     * The JsonArray to parse.
+     * 
+     * @return
+     * A map of Wheels keyed by their names.
+     */
     public static Map<String, Wheel> getWheelsMappedByName(JsonArray jsonArray) {
         List<Wheel> list = WheelJsonFactory.getWheels(jsonArray);
         Map<String, Wheel> map = Maps.newHashMap();
@@ -42,6 +63,16 @@ public class WheelJsonFactory {
         return map;
     }
     
+    /**
+     * Creates a single Wheel object from a properly formatted JsonElement.
+     * 
+     * @param jsonElement
+     * The input element to be parsed.
+     * 
+     * @return
+     * A Wheel created using the data in the jsonElement if possible, or null
+     * if the jsonElement lacks the required attributes.
+     */
     @SuppressWarnings("unchecked")
     public static Wheel getSingleWheel(JsonElement jsonElement) {
         Wheel wheel = null;
@@ -68,9 +99,21 @@ public class WheelJsonFactory {
         return wheel;
     }
     
-    
+    /**
+     * Gets the valid vehicles for the given wheel given the valid-on object (keyed with "ValidOn")
+     * and the positionSuffix ("Front", "Rear", "Middle", etc).
+     * 
+     * @param validOnObject
+     * The object containing the vehicle validity data.
+     * 
+     * @param positionSuffix
+     * The position of the wheel.
+     * 
+     * @return
+     * A list containing the types of vehicles for which the wheel is valid in the position given.
+     */
     protected static List<VehicleType> getValidVehiclesForWheel(JsonObject validOnObject, String positionSuffix) {
-        List<VehicleType> validVehicleList = new ArrayList<VehicleType>();
+        List<VehicleType> validVehicleList = Lists.newArrayList();
         try {
             for (Map.Entry<String,JsonElement> entry : validOnObject.entrySet()) {
                 if (entry.getValue().getAsBoolean() && entry.getKey().endsWith(positionSuffix)) {

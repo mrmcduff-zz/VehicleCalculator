@@ -12,6 +12,9 @@ import com.mishmash.alpha.VehicleType;
 import com.mishmash.alpha.vehicleparts.IVehiclePart;
 import com.mishmash.alpha.vehicleparts.PowerPlant;
 
+/**
+ * Class to build Power Plants out of JSON
+ */
 public class PowerPlantJsonFactory {
     private static final List<String> requiredPartNames = Lists.newArrayList(IVehiclePart.NAME_KEY,
             IVehiclePart.VALID_ON_KEY, PowerPlant.SPEED_IN_MPH_KEY);

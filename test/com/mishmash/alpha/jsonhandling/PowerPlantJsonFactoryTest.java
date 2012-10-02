@@ -27,7 +27,7 @@ public class PowerPlantJsonFactoryTest {
                 RiderJsonFactoryTest.class.getResourceAsStream(TestUtils.LOCAL_SOURCE),
                 "UTF-8");
         List<String> categoryList = Lists.newArrayList(PowerPlant.PROPERTY_NAME);
-        Map<String, JsonArray> categories = DataParser.seperateCategories(rawData, categoryList);
+        Map<String, JsonArray> categories = ItemGatherer.seperateCategories(rawData, categoryList);
         jsonArray = categories.get(PowerPlant.PROPERTY_NAME);
     }
 

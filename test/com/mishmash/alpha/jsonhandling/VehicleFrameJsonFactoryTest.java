@@ -26,7 +26,7 @@ public class VehicleFrameJsonFactoryTest {
                 RiderJsonFactoryTest.class.getResourceAsStream(TestUtils.LOCAL_SOURCE),
                 "UTF-8");
         List<String> categoryList = Lists.newArrayList(VehicleFrame.PROPERTY_NAME);
-        Map<String, JsonArray> categories = DataParser.seperateCategories(rawData, categoryList);
+        Map<String, JsonArray> categories = ItemGatherer.seperateCategories(rawData, categoryList);
         frameJsonArray = categories.get(VehicleFrame.PROPERTY_NAME);
     }
 
