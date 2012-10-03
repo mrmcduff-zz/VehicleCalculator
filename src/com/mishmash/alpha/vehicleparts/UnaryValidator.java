@@ -7,19 +7,31 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.mishmash.alpha.VehicleType;
 
+/**
+ * A UnaryValidator cares only about the type of vehicle, and not
+ * any additional arguments such as position.
+ */
 public class UnaryValidator implements IVehicleTypeValidator {
 
     private Map<VehicleType, Boolean> validMap = Maps.newHashMap();
     
     public UnaryValidator() {}
     
+    /**
+     * This is separated from the constructor so that the types can 
+     * be set dynamically if needed.
+     * 
+     * @param validTypes
+     * The vehicle types for which this is valid.
+     */
     public void setValidTypes(List<VehicleType> validTypes) {
         if (validTypes != null) {
             for (VehicleType type : validTypes) {
-                validMap.put(type, true);
+                if (type != VehicleType.INVALID) {
+                    validMap.put(type, true);
+                }
             }
         }
-
     }
     
     @Override
@@ -27,6 +39,9 @@ public class UnaryValidator implements IVehicleTypeValidator {
         return validMap.containsKey(type) && validMap.get(type);
     }
 
+    /**
+     * A unary validator ignores the arguments.
+     */
     @Override
     public boolean isValidForTypeWithParameters(VehicleType type,
             String... args) {
@@ -37,6 +52,11 @@ public class UnaryValidator implements IVehicleTypeValidator {
         return ImmutableMap.copyOf(this.validMap);
     }
     
+    /**
+     * Validators are equal if they validate on the same types. The maps may not
+     * be the same, as putting in what they don't validate doesn't change what they 
+     * do validate.
+     */
     @Override
     public boolean equals(Object other) {
         boolean answer = true;
@@ -58,11 +78,11 @@ public class UnaryValidator implements IVehicleTypeValidator {
     
     @Override
     public int hashCode() {
-        int hash = VehicleType.INVALID.hashCode();
+        int hash = VehicleType.INVALID.toString().hashCode();
 
         for (VehicleType type : this.getValidMap().keySet()) {
             if (this.isValidForType(type)) {
-                hash += type.hashCode();
+                hash += type.toString().hashCode();
             }
         }
         return hash;

@@ -68,12 +68,12 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
     }
     
     @Override
-    public double getTimeModifierFactor() {
+    public double getTimeModifierPercentage() {
         return this.timeModifierValue;
     }
     
     @Override
-    public double getSpeedModifierFactor() {
+    public double getSpeedModifierPercentage() {
         return this.speedModifierValue;
     }
     
@@ -105,13 +105,18 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
         boolean answer = true;
         if (other != null && other instanceof Wheel) {
             Wheel otherWheel = (Wheel) other;
-            answer = answer && otherWheel.getName().equals(this.getName());
+            if (otherWheel.getName() == null) {
+                answer = answer && this.name == null;
+            } else {
+                answer = answer && otherWheel.getName().equals(this.getName());
+            }
+            
             answer = answer && 
-                    PartUtils.doubleEquals(otherWheel.getSpeedModifierFactor(), 
-                            this.getSpeedModifierFactor());
+                    PartUtils.doubleEquals(otherWheel.getSpeedModifierPercentage(), 
+                            this.getSpeedModifierPercentage());
             answer = answer && 
-                    PartUtils.doubleEquals(otherWheel.getTimeModifierFactor(), 
-                            this.getTimeModifierFactor());
+                    PartUtils.doubleEquals(otherWheel.getTimeModifierPercentage(), 
+                            this.getTimeModifierPercentage());
             if (otherWheel.getValidator() != null) {
                 answer = answer && otherWheel.getValidator().equals(this.positionValidator);
             } else {
@@ -127,11 +132,15 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
     
     @Override
     public int hashCode() {
-        int hash = this.getName().hashCode();
-        hash += (int) (IDistanceModifierPart.SPEED_MODIFIER_KEY.hashCode() *
-                PartUtils.getHashableValueFromDouble(getSpeedModifierFactor()));
-        hash += (int) (IDistanceModifierPart.TIME_MODIFIER_KEY.hashCode() *
-                PartUtils.getHashableValueFromDouble(getTimeModifierFactor()));
+        int hash = 0;
+        if (this.name != null) {
+            hash += this.name.hashCode();
+        }
+        
+        hash += (IDistanceModifierPart.SPEED_MODIFIER_KEY.hashCode() *
+                PartUtils.getHashableValueFromDouble(getSpeedModifierPercentage()));
+        hash += (IDistanceModifierPart.TIME_MODIFIER_KEY.hashCode() *
+                PartUtils.getHashableValueFromDouble(getTimeModifierPercentage()));
         hash += this.positionValidator.hashCode();
         
         return hash;

@@ -11,6 +11,10 @@ import com.google.common.collect.Lists;
 import com.mishmash.alpha.PartPosition;
 import com.mishmash.alpha.VehicleType;
 
+/**
+ * This is the most complicated of the validators, so it gets its own tests.
+ * The tests also helped drive development of the class.
+ */
 public class WheelPositionValidatorTest {
 
     WheelPositionValidator wpv1;

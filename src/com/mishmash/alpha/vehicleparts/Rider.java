@@ -37,7 +37,7 @@ public class Rider implements IVehiclePart {
     
     @Override
     public boolean hasValidAttributes() {
-        return (!name.equals("") && rideTimeInMinutes >= 0);
+        return (name != null && !name.equals("") && rideTimeInMinutes >= 0);
     }
     
     /**
@@ -76,9 +76,12 @@ public class Rider implements IVehiclePart {
      */
     @Override
     public final int hashCode() {
-        return this.name.hashCode() + 
-                (Rider.PROPERTY_NAME.hashCode() * 
-                        PartUtils.getHashableValueFromDouble(rideTimeInMinutes));
+        int hash = 0;
+        if (this.name != null) {
+            hash += this.name.hashCode();
+        }
+        hash += Rider.PROPERTY_NAME.hashCode() * PartUtils.getHashableValueFromDouble(rideTimeInMinutes);
+        return hash;
     }
 
 

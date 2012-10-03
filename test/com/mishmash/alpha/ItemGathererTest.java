@@ -22,6 +22,9 @@ public class ItemGathererTest {
         rawData = IOUtils.toString(ItemGatherer.class.getResourceAsStream(LOCAL_SOURCE), "UTF-8");
     }
     
+    /**
+     * Testing only the basics here. 
+     */
     @Test
     public void testSeperateCategories() {
         assertTrue(rawData.length() > 0);

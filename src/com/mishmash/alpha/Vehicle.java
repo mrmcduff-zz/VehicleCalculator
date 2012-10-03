@@ -128,18 +128,18 @@ public class Vehicle {
                 for (IDistanceModifierPart idmp : this.distanceModifiers) {
                     // Stacking modifiers multiplicatively
                     speedModifier *= PartUtils.convertFromPercentageToMultiplicativeModifier(
-                            idmp.getSpeedModifierFactor());
+                            idmp.getSpeedModifierPercentage());
                     timeModifier *= PartUtils.convertFromPercentageToMultiplicativeModifier(
-                            idmp.getTimeModifierFactor());
+                            idmp.getTimeModifierPercentage());
                 }
                 
             } else {
                 for (IDistanceModifierPart idmp : this.distanceModifiers) {
                     speedModifier += PartUtils.convertFromPercentageToAdditiveModifier(
-                            idmp.getSpeedModifierFactor());
+                            idmp.getSpeedModifierPercentage());
                     
                     timeModifier += PartUtils.convertFromPercentageToAdditiveModifier(
-                            idmp.getTimeModifierFactor());
+                            idmp.getTimeModifierPercentage());
                 }
             }
             

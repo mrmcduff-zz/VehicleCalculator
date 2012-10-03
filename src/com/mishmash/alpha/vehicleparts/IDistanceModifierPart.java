@@ -9,7 +9,7 @@ public interface IDistanceModifierPart {
     public static final String SPEED_MODIFIER_KEY = "SpeedModifierPercentage";
     public static final double MODIFIER_MINIMUM_PERCENTAGE = -100;
     
-    public double getSpeedModifierFactor();
-    public double getTimeModifierFactor();
+    public double getSpeedModifierPercentage();
+    public double getTimeModifierPercentage();
 
 }

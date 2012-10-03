@@ -49,15 +49,24 @@ public class PowerPlant implements IVehiclePart{
     
     @Override
     public boolean hasValidAttributes() {
-        return (!name.equals("") && speedInMph >= 0);
+        return (name != null && !name.equals("") && speedInMph >= 0);
     }
     
+    /**
+     * Two PowerPlants are equal if they have the same name, speed, and 
+     * have validators that are equal.
+     */
     @Override
     public final boolean equals(Object other) {
         boolean answer = true;
         if (other instanceof PowerPlant) {
             PowerPlant otherPlant = (PowerPlant) other;
-            answer = answer && (otherPlant.getName().equals(this.getName()));
+            if (otherPlant.getName() == null) {
+                answer = answer && this.getName() == null;
+            } else {
+                answer = answer && (otherPlant.getName().equals(this.getName()));
+            }
+            
             answer = answer && 
                     (PartUtils.doubleEquals(otherPlant.getSpeedInMph(), 
                             this.getSpeedInMph()));
@@ -75,7 +84,11 @@ public class PowerPlant implements IVehiclePart{
     
     @Override
     public final int hashCode() {
-        int hash = this.getName().hashCode();
+        int hash = 0;
+        if (this.getName() != null) {
+            hash = this.getName().hashCode();
+        }
+        
         hash += (PowerPlant.SPEED_IN_MPH_KEY.hashCode() * 
                 PartUtils.getHashableValueFromDouble(speedInMph));
         hash += this.validator.hashCode();

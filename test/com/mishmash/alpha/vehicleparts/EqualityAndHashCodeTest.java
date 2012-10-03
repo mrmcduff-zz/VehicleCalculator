@@ -9,6 +9,13 @@ import org.junit.Test;
 import com.google.common.collect.Lists;
 import com.mishmash.alpha.VehicleType;
 
+/**
+ * Equals and HashCode testing were the most important and most difficult parts of 
+ * making the part objects, and they are tested heavily here.
+ * 
+ * By extension this also tests validators for equals and hashcode compliance, as
+ * they are part of the part objects.
+ */
 public class EqualityAndHashCodeTest {
 
     List<VehicleType> allTypes = Lists.newArrayList(VehicleType.validValues());
