@@ -61,8 +61,10 @@ public class GuiController {
         if (vehicle != null && vehicle.isValid()) {
             double distance = vehicle.getDistance(operation);
             DecimalFormat df = new DecimalFormat("##.###");
-            output = String.format("The %s ridden by %s traveled %s miles.", type.toString(), 
+            output = String.format("The %s ridden by %s traveled %s miles.", 
+                    type.toString().toLowerCase(), 
                     partMap.get(VehicleGuiPart.RIDER), df.format(distance));
+            
         } else {
             output = "There is a problem with your vehicle configuration.";
         }
