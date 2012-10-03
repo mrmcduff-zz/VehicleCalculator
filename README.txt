@@ -20,6 +20,15 @@ Each part has attributes (not visible in the gui) that affect how much they impa
 If you would prefer modifiers to stack multiplicatively (so that the two wheels would make you move 1.10 * 1.10 = 1.21, or 21% faster), select Options from the menu and set the stacking operation to Multiply.
 
 ---Source Files---
-All files can be found at https://github.com/mrmcduff/VehicleCalculator. VehicleCalculator was built using Eclipse in standard package format using com.mishmash.alpha as the package. You can clone the repository and import the project into your workspace if you'd like to build. You will need JDK 1.6 or above and JUnit 4 if you'd like to run the tests. The 'doc' folder contains the javadoc html files documenting all public methods of all classes. The 'src' folder contains the source code, and the 'test' folder contains the JUnit tests.
+All files can be found at https://github.com/mrmcduff/VehicleCalculator. VehicleCalculator was built using Eclipse in standard package format using com.mishmash.alpha as the package. You can clone the repository and import the project into your workspace if you'd like to build, provided you have the required libraries in your path (see below). You will need JDK 1.6 or above and JUnit 4 if you'd like to run the tests. The 'doc' folder contains the javadoc html files documenting all public methods of all classes. The 'src' folder contains the source code, and the 'test' folder contains the JUnit tests.
 
 VehicleCalculator was written using abbreviated TDD, where most tests were written prior to development and most methods are tested. A few regression tests for particularly tricky bugs were created and left in the test code. Some methods were left without automated tests due to time constraints. 
+
+VehicleCalculator depends on the following external libraries:
+guava-13.0.1
+gson-2.2.2
+commons-io-2.4
+
+These must be in your Java build path in order to build the project. To add these in Eclipse, open the project folder, right click and go to Properties -> Java Build Path -> Libraries (tab), click Add External Jar, and locate the libraries on your machine.
+
+
