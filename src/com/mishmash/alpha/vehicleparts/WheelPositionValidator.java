@@ -7,6 +7,11 @@ import com.google.common.collect.Maps;
 import com.mishmash.alpha.PartPosition;
 import com.mishmash.alpha.VehicleType;
 
+/**
+ * Class used to validate a wheel based on vehicle type.
+ * Holds any number of position-based maps that store validity.
+ *
+ */
 public class WheelPositionValidator implements IVehicleTypeValidator {
 
     private Map<PartPosition, Map<VehicleType, Boolean>> positionKeyedMapOfMaps = Maps.newHashMap();
@@ -35,6 +40,10 @@ public class WheelPositionValidator implements IVehicleTypeValidator {
         }
     }
     
+    /**
+     * A wheel is only valid for a type (without position argument) if 
+     * it is valid for that position on all possible part positions.
+     */
     @Override
     public boolean isValidForType(VehicleType type) {
         boolean isValid = true;
@@ -50,6 +59,11 @@ public class WheelPositionValidator implements IVehicleTypeValidator {
         return isValid;
     }
 
+    /**
+     * This is the usual way to check type validation for a wheel, as it
+     * can be in two positions on the vehicle and being in the front is no 
+     * guarantee that it can be in the back.
+     */
     @Override
     public boolean isValidForTypeWithParameters(VehicleType type,
             String... args) {
@@ -73,7 +87,12 @@ public class WheelPositionValidator implements IVehicleTypeValidator {
         return positionKeyedMapOfMaps.size();
     }
    
-    
+
+    /**
+     * If this validator validates the same as the other for all possible
+     * positions and types (where possible is determined by their enums), then 
+     * the validators are equal.
+     */
     @Override
     public final boolean equals(Object other) {
         boolean equals = true;
@@ -110,10 +129,24 @@ public class WheelPositionValidator implements IVehicleTypeValidator {
         return equals;
     }
     
+    /**
+     * Here we have to be careful to only use those properties used in 
+     * equals: the positions and types for which the validator reports true.
+     */
     @Override
     public int hashCode() {
-        return 1;
+        int hash = VehicleType.INVALID.toString().hashCode();
+        for (PartPosition position : PartPosition.values()) {
+            if (position != PartPosition.INVALID) {
+                for (VehicleType type : VehicleType.values()) {
+                    if (type != VehicleType.INVALID && 
+                            this.isValidForTypeWithParameters(type, position.toString())) {
+                        hash += type.toString().hashCode() + position.toString().hashCode();
+                    }
+                } // Close of the loop over VehicleType
+            }
+        }
+        return hash;
     }
-
 
 }

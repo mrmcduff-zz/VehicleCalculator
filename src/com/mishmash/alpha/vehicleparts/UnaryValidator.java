@@ -58,7 +58,7 @@ public class UnaryValidator implements IVehicleTypeValidator {
     
     @Override
     public int hashCode() {
-        int hash = (validMap.size() + 1) * VehicleType.INVALID.hashCode();
+        int hash = VehicleType.INVALID.hashCode();
 
         for (VehicleType type : this.getValidMap().keySet()) {
             if (this.isValidForType(type)) {

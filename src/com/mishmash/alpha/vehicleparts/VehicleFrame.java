@@ -59,7 +59,12 @@ public class VehicleFrame implements IVehiclePart, IDistanceModifierPart {
         boolean answer = true;
         if (other instanceof VehicleFrame) {
             VehicleFrame otherFrame = (VehicleFrame) other;
-            answer = answer && (otherFrame.getName().equals(this.getName()));
+            if (otherFrame.getName() != null) {
+                answer = answer && (otherFrame.getName().equals(this.getName()));
+            } else {
+                answer = answer && this.getName() == null;
+            }
+
             answer = answer && PartUtils.doubleEquals(otherFrame.getSpeedModifierFactor(),
                     this.getSpeedModifierFactor());
             answer = answer && PartUtils.doubleEquals(otherFrame.getTimeModifierFactor(),
@@ -67,7 +72,7 @@ public class VehicleFrame implements IVehiclePart, IDistanceModifierPart {
             if (otherFrame.getValidator() != null) {
                 answer = answer && otherFrame.getValidator().equals(this.validator);
             } else {
-                answer = false;
+                answer = answer && (this.validator == null);
             }
             
         } else {
@@ -82,9 +87,9 @@ public class VehicleFrame implements IVehiclePart, IDistanceModifierPart {
         // Both magic numbers below are simply four digit primes, chosen
         // for no reason other than primality and magnitude.
         hash += (int) (IDistanceModifierPart.SPEED_MODIFIER_KEY.hashCode() * 
-                this.getSpeedModifierFactor());
+                PartUtils.getHashableValueFromDouble(getSpeedModifierFactor()));
         hash += (int) (IDistanceModifierPart.TIME_MODIFIER_KEY.hashCode() * 
-                this.getTimeModifierFactor());
+                PartUtils.getHashableValueFromDouble(getTimeModifierFactor()));
         hash += this.validator.hashCode();
         
         return hash;

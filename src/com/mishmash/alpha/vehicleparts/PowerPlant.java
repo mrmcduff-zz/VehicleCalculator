@@ -7,8 +7,8 @@ import java.util.List;
 import com.mishmash.alpha.VehicleType;
 
 /**
- * @author mrmcduff
- *
+ * Class representing a vehicle power plant. Stores all relevant data and has
+ * the ability to check its own validity based on data and type.
  */
 public class PowerPlant implements IVehiclePart{
     
@@ -76,7 +76,8 @@ public class PowerPlant implements IVehiclePart{
     @Override
     public final int hashCode() {
         int hash = this.getName().hashCode();
-        hash += (int) (PowerPlant.SPEED_IN_MPH_KEY.hashCode() * this.speedInMph);
+        hash += (PowerPlant.SPEED_IN_MPH_KEY.hashCode() * 
+                PartUtils.getHashableValueFromDouble(speedInMph));
         hash += this.validator.hashCode();
         return hash;
     }

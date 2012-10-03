@@ -6,6 +6,10 @@ import java.util.List;
 import com.mishmash.alpha.PartPosition;
 import com.mishmash.alpha.VehicleType;
 
+/**
+ * Represents a wheel. This contains data and is the most complicated of the parts
+ * as it must keep a more complex type validator than other parts.
+ */
 public class Wheel implements IVehiclePart, IDistanceModifierPart {
 
     private String name;
@@ -83,9 +87,19 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
     public boolean hasValidAttributes() {
         return this.timeModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE &&
                 this.speedModifierValue >= IDistanceModifierPart.MODIFIER_MINIMUM_PERCENTAGE && 
-                !this.name.equals("");
+                this.name != null && !this.name.equals("");
     }
     
+    /**
+     * Two wheels are equal if:
+     * 1. They have the same name.
+     * 2. They have the same modifier properties (compared by doubleEquals)
+     * 3. They are valid for the same types of vehicles in all possible positions.
+     * 
+     * Note that the validation maps don't necessarily have to be the same, and 
+     * excess validation positions are ignored. These things are similarly ignored
+     * in hashCode.
+     */
     @Override
     public boolean equals(Object other) {
         boolean answer = true;
@@ -115,9 +129,9 @@ public class Wheel implements IVehiclePart, IDistanceModifierPart {
     public int hashCode() {
         int hash = this.getName().hashCode();
         hash += (int) (IDistanceModifierPart.SPEED_MODIFIER_KEY.hashCode() *
-                this.getSpeedModifierFactor());
+                PartUtils.getHashableValueFromDouble(getSpeedModifierFactor()));
         hash += (int) (IDistanceModifierPart.TIME_MODIFIER_KEY.hashCode() *
-                this.getTimeModifierFactor());
+                PartUtils.getHashableValueFromDouble(getTimeModifierFactor()));
         hash += this.positionValidator.hashCode();
         
         return hash;

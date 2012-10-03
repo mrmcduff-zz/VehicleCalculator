@@ -1,6 +1,8 @@
 package com.mishmash.alpha.vehicleparts;
 
-
+/**
+ * Class representing a rider object. Holds data, not much else.
+ */
 public class Rider implements IVehiclePart {
 
     private String name;
@@ -38,17 +40,29 @@ public class Rider implements IVehiclePart {
         return (!name.equals("") && rideTimeInMinutes >= 0);
     }
     
+    /**
+     * A rider only has two distinguishing characteristics, so they
+     * are the same if their names and ride times are equal.
+     */
     @Override
     public final boolean equals(Object other) {
+        boolean answer = true;
         if ( other != null && other instanceof Rider ) {
             Rider otherRider = (Rider) other;
-            return otherRider.getName().equals(this.name) &&
-                    PartUtils.doubleEquals(
-                            otherRider.getRideTimeInMinutes(), 
-                            this.rideTimeInMinutes); 
+            if (otherRider.getName() == null) {
+                answer = answer && this.name == null;
+            } else {
+                answer = answer && otherRider.getName().equals(this.name);
+            }
+            
+            answer = answer && PartUtils.doubleEquals(
+                    otherRider.getRideTimeInMinutes(), 
+                    this.rideTimeInMinutes);
         } else {
-            return false;
+            answer = false;
         }
+        
+        return answer;
     }
     
     /**
@@ -57,13 +71,14 @@ public class Rider implements IVehiclePart {
      * hashcode to differentiate "Fred, 0.3" from "Fred, 0.4". It's not against the rules
      * for these to have the same hashcode, but it would be preferable not to.
      * 
-     * All riders will have the same propery name, so if rideTimeInMinutes is zero
+     * All riders will have the same property name, so if rideTimeInMinutes is zero
      * we aren't losing something that would differentiate them.
      */
     @Override
     public final int hashCode() {
         return this.name.hashCode() + 
-                (int) (Rider.PROPERTY_NAME.hashCode() * this.rideTimeInMinutes);
+                (Rider.PROPERTY_NAME.hashCode() * 
+                        PartUtils.getHashableValueFromDouble(rideTimeInMinutes));
     }
 
 
