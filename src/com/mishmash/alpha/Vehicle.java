@@ -16,7 +16,7 @@ import com.mishmash.alpha.vehicleparts.VehicleFrame;
 import com.mishmash.alpha.vehicleparts.Wheel;
 
 /**
- * Reperesents the star of this application, the Vehicle. Vehicles have limited functionality
+ * Represents the star of this application, the Vehicle. Vehicles have limited functionality
  * other than to check their own validity (in case they've been given invalid parts) and to
  * calculate the distance that they could travel. Vehicles deliberately don't have
  * setter methods for the parts. If you want to change the parts of a vehicle, create a new
